@@ -7,8 +7,8 @@ Use the `Use this template` button to create a repository using this one as a st
 ## Progress Tracker
 
 -   [x] Create basic graph nodes and edges
--   [ ] Create mouse zoom system (offset, dpr initial scale, center origin)
 -   [ ] Add mock event listeners using offscreen canvas (are there fractional colors?)
+-   [ ] Create mouse zoom system (offset, dpr initial scale, center origin)
 -   [ ] Add graph editing keyboard shortcuts
 -   [ ] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
 -   [ ] Create global configuration system

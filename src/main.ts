@@ -7,6 +7,7 @@ import {
 	renderLoop,
 } from "./canvas-helpers"
 import { Graph } from "./graph"
+import { Editor } from "./editor"
 
 const containerSelector = "#container"
 
@@ -37,12 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
 		sampleGraph.nodeDate
 	)
 
+	const editor = new Editor(graph, canvas, offscreenCanvas)
+
 	renderLoop(canvas, offscreenCanvas, (ctx, offscreenCtx) => {
 		// Clear the canvas
 		ctx.clearRect(0, 0, canvas.width, canvas.height)
+		offscreenCtx.clearRect(0, 0, canvas.width, canvas.height)
 
-		graph.render(ctx)
-		graph.renderOffscreen(offscreenCtx)
+		editor.render(ctx)
+		editor.renderOffscreen(offscreenCtx)
 
 		// Render the offscreen canvas
 		// ctx.drawImage(offscreenCanvas, 0, 0)
