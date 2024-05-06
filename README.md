@@ -6,9 +6,9 @@ Use the `Use this template` button to create a repository using this one as a st
 
 ## Progress Tracker
 
--   [ ] Create basic graph nodes and edges
+-   [x] Create basic graph nodes and edges
 -   [ ] Create mouse zoom system
--   [ ] Add mock event listeners using offscreen canvas
+-   [ ] Add mock event listeners using offscreen canvas (are there fractional colors?)
 -   [ ] Add graph editing keyboard shortcuts
 -   [ ] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
 -   [ ] Create global configuration system
