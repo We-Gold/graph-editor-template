@@ -47,3 +47,4 @@ export const distanceFromPointToLine = (v: Vector, p1: Vector, p2: Vector) => {
 	return distance(v, projection)
 }
 
+export const midpoint = (u: Vector, v: Vector): Vector => scale(add(u, v), 0.5)

@@ -30,7 +30,9 @@ export class Graph {
 		edgeColor: string
 		edgeWidth: number
 		nodeSelectedRadius: number
-		nodeHoverWidth: number
+		nodeHoveredWidth: number
+		edgeHoveredLength: number
+		edgeHoveredColor: string
 	}
 
 	constructor(
@@ -45,7 +47,9 @@ export class Graph {
 			edgeColor: "gray",
 			edgeWidth: 6,
 			nodeSelectedRadius: 4,
-			nodeHoverWidth: 3,
+			nodeHoveredWidth: 3,
+			edgeHoveredLength: 20,
+			edgeHoveredColor: "turquoise",
 		}
 	) {
 		this.x = x

@@ -13,6 +13,7 @@ import {
 	rotate,
 	distance,
 	distanceFromPointToLine,
+	midpoint,
 } from "../src/vector"
 
 describe("Vector Functions", () => {
@@ -115,6 +116,13 @@ describe("Vector Functions", () => {
 		const p42 = vector(0, -2)
 		const result4 = distanceFromPointToLine(v4, p41, p42)
 		expect(result4).toBeCloseTo(Math.sqrt(2))
+	})
+
+	test("midpoint", () => {
+		const u = vector(1, 2)
+		const v = vector(3, 4)
+		const result = midpoint(u, v)
+		expect(result).toEqual({ x: 2, y: 3 })
 	})
 })
 
