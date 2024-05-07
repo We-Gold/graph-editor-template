@@ -53,12 +53,8 @@ export const initializeCanvases = (
 	const resizeCanvas = () => {
 		const { width, height } = container.getBoundingClientRect()
 
-		// Temporary solution before zooming added
-		// canvas.width = width * window.devicePixelRatio
-		// canvas.height = height * window.devicePixelRatio
-
-		canvas.width = width
-		canvas.height = height
+		canvas.width = width * window.devicePixelRatio
+		canvas.height = height * window.devicePixelRatio
 		canvas.style.width = `${width}px`
 		canvas.style.height = `${height}px`
 

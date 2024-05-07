@@ -33,7 +33,10 @@ export class Camera {
 		// Initilize the camera with a scale based on the device pixel ratio
 		this.scale = 1
 
-		this.center = vector(canvas.width / 2, canvas.height / 2)
+		this.center = vector(
+			canvas.width / 2 / window.devicePixelRatio,
+			canvas.height / 2 / window.devicePixelRatio
+		)
 		this.offset = scale(this.center, -1)
 
 		this.drag = {
@@ -110,13 +113,15 @@ export class Camera {
 			(e.offsetX - this.center.x) * this.scale - this.offset.x,
 			(e.offsetY - this.center.y) * this.scale - this.offset.y
 		)
+
 		return subtractDragOffset ? subtract(v, this.drag.offset) : v
 	}
 
-	render(ctx: CanvasRenderingContext2D) {
+	render(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D) {
 		ctx.restore()
 		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 		ctx.save()
+		ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 		ctx.translate(this.center.x, this.center.y)
 		ctx.scale(1 / this.scale, 1 / this.scale)
 		const offset = add(this.offset, this.drag.offset)
@@ -124,13 +129,7 @@ export class Camera {
 	}
 
 	renderOffscreen(ctx: OffscreenCanvasRenderingContext2D) {
-		ctx.restore()
-		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-		ctx.save()
-		ctx.translate(this.center.x, this.center.y)
-		ctx.scale(1 / this.scale, 1 / this.scale)
-		const offset = add(this.offset, this.drag.offset)
-		ctx.translate(offset.x, offset.y)
+		this.render(ctx)
 	}
 
 	destroy() {
