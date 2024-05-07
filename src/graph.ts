@@ -7,6 +7,9 @@ import { incrementColor } from "./mouse-event-helpers"
 import { renderEdge, renderNode, renderNodeOffscreen } from "./render-helpers"
 import { Vector, distance, vector, distanceFromPointToLine } from "./vector"
 
+export type GraphItem = { type: "node" | "edge" | "none"; index: number }
+export const NoneGraphItem: GraphItem = { type: "none", index: -1 }
+
 /**
  * The graph class manages all nodes and edges in the graph.
  * It can be used to add, render, and delete nodes and edges.
@@ -26,6 +29,8 @@ export class Graph {
 		nodeAccentColor: string
 		edgeColor: string
 		edgeWidth: number
+		nodeSelectedRadius: number
+		nodeHoverWidth: number
 	}
 
 	constructor(
@@ -39,6 +44,8 @@ export class Graph {
 			nodeAccentColor: "turquoise",
 			edgeColor: "gray",
 			edgeWidth: 6,
+			nodeSelectedRadius: 4,
+			nodeHoverWidth: 3,
 		}
 	) {
 		this.x = x
@@ -60,6 +67,17 @@ export class Graph {
 		this.nodeData.push(data)
 	}
 
+	getNode(i: number) {
+		return { x: this.x[i], y: this.y[i], data: this.nodeData[i] }
+	}
+
+	getEdge(i: number) {
+		return {
+			u: this.getNode(this.edges[i][0]),
+			v: this.getNode(this.edges[i][1]),
+		}
+	}
+
 	/**
 	 * Add an edge to the graph
 	 * @param {number} i The index of the first node
@@ -73,12 +91,9 @@ export class Graph {
 	 * Get either a node or an edge at the given index
 	 * @param mouse The mouse position in the world space
 	 * @param i The index of the item based on the order in which it was added (edges are added first, then nodes)
-	 * @returns {{ type: "node" | "edge" | "none"; index: number }} The type of item and its index in its respective array
+	 * @returns {GraphItem} The type of item and its index in its respective array
 	 */
-	getItemAtIndex(
-		mouse: Vector,
-		i: number
-	): { type: "node" | "edge" | "none"; index: number } {
+	getItemAtIndex(mouse: Vector, i: number): GraphItem {
 		if (
 			this.isIndexNode(i) &&
 			this.pointInNode(mouse, i - this.edges.length)
@@ -87,7 +102,7 @@ export class Graph {
 		} else if (this.isIndexEdge(i) && this.pointInEdge(mouse, i)) {
 			return { type: "edge", index: i }
 		} else {
-			return { type: "none", index: -1 }
+			return NoneGraphItem
 		}
 	}
 

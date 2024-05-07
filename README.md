@@ -13,6 +13,9 @@ Use the `Use this template` button to create a repository using this one as a st
     -   [ ] Move point
     -   [ ] Remove point
     -   [ ] Add point
+    -   [ ] Add edge
+    -   [ ] Remove edge
+    -   [ ] Deselect
     -   [ ] Undo (make each thing an action, and then make classes with an undo method, and a stack for history)
 -   [ ] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
 -   [ ] Create global configuration system
