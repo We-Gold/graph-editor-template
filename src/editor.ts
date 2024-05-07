@@ -1,5 +1,6 @@
 import { Camera } from "./camera"
 import { Graph } from "./graph"
+import { colorToIndex } from "./mouse-event-helpers"
 
 export class Editor {
 	graph: Graph
@@ -36,9 +37,7 @@ export class Editor {
 	}
 
 	handleMouseMove(e: MouseEvent) {
-		// TODO: This is a temporary solution to get the mouse position
-		// Once zooming is implemented, this will need to be updated
-		const mousePosition = this.camera.getMousePosition(e)
+		const mousePosition = this.camera.getPhysicalMousePosition(e)
 
 		// Get the color of the pixel at the mouse position on the offscreen canvas
 		const color = this.offscreenCtx.getImageData(
@@ -48,9 +47,14 @@ export class Editor {
 			1
 		).data
 
-		// if (color[3] === 255) {
-		// 	console.log(color)
-		// }
+		if (color[3] !== 0) {
+			const index = colorToIndex(color)
+
+			const item = this.graph.getItemAtIndex(
+				this.camera.getMousePosition(e),
+				index
+			)
+		}
 	}
 
 	render(ctx: CanvasRenderingContext2D) {

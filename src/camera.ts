@@ -108,13 +108,31 @@ export class Camera {
 		}
 	}
 
-	getMousePosition(e: MouseEvent, subtractDragOffset = false) {
+	/**
+	 * Get the mouse position in the world space, so that it can be used to interact with the graph
+	 * @param e The mouse event
+	 * @param subtractDragOffset If true, subtract the drag offset from the mouse position
+	 * @returns {Vector} The mouse position in the world space
+	 */
+	getMousePosition(e: MouseEvent, subtractDragOffset = false): Vector {
 		const v = vector(
 			(e.offsetX - this.center.x) * this.scale - this.offset.x,
 			(e.offsetY - this.center.y) * this.scale - this.offset.y
 		)
 
 		return subtractDragOffset ? subtract(v, this.drag.offset) : v
+	}
+
+	/**
+	 * Get the physical mouse position in the canvas space
+	 * @param e The mouse event
+	 * @returns {Vector} The physical mouse position in the canvas space
+	 */
+	getPhysicalMousePosition(e: MouseEvent): Vector {
+		return vector(
+			e.offsetX * window.devicePixelRatio,
+			e.offsetY * window.devicePixelRatio
+		)
 	}
 
 	render(ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D) {

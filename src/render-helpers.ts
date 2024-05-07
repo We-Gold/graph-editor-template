@@ -46,6 +46,40 @@ export const renderNode = (
 }
 
 /**
+ * Render a node based on the given configuration
+ * @param {RenderingContext} ctx The rendering context
+ * @param {number} x The x coordinate of the node
+ * @param {number} y The y coordinate of the node
+ * @param {object} config The configuration object
+ */
+export const renderNodeOffscreen = (
+	ctx: RenderingContext,
+	x: number,
+	y: number,
+	{
+		nodeCircleColor,
+		nodeCircleRadius,
+	}: {
+		nodeCircleColor: string
+		nodeCircleRadius: number
+	}
+) => {
+	ctx.save()
+	ctx.fillStyle = nodeCircleColor
+
+	// Move to the center of the node
+	ctx.translate(x, y)
+
+	// Draw the node circle
+	ctx.beginPath()
+	ctx.arc(0, 0, nodeCircleRadius, 0, 2 * Math.PI)
+	ctx.fill()
+	ctx.closePath()
+
+	ctx.restore()
+}
+
+/**
  * Render an edge based on the given configuration
  * @param {RenderingContext} ctx The rendering context
  * @param {number} x1 The x coordinate of the first node

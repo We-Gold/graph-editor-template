@@ -11,6 +11,8 @@ import {
 	magnitude,
 	normalize,
 	rotate,
+	distance,
+	distanceFromPointToLine,
 } from "../src/vector"
 
 describe("Vector Functions", () => {
@@ -80,6 +82,39 @@ describe("Vector Functions", () => {
 		const result = rotate(v, angleRadians)
 		expect(result.x).toBeCloseTo(0)
 		expect(result.y).toBeCloseTo(1)
+	})
+
+	test("distance", () => {
+		const u = vector(1, 2)
+		const v = vector(4, 6)
+		const result = distance(u, v)
+		expect(result).toBeCloseTo(5)
+	})
+
+	test("distanceFromPointToLine", () => {
+		const v1 = vector(1, 1)
+		const p11 = vector(0, 0)
+		const p12 = vector(2, 0)
+		const result1 = distanceFromPointToLine(v1, p11, p12)
+		expect(result1).toBeCloseTo(1)
+
+		const v2 = vector(3, 3)
+		const p21 = vector(0, 0)
+		const p22 = vector(3, 0)
+		const result2 = distanceFromPointToLine(v2, p21, p22)
+		expect(result2).toBeCloseTo(3)
+
+		const v3 = vector(1, 1)
+		const p31 = vector(0, 0)
+		const p32 = vector(0, 2)
+		const result3 = distanceFromPointToLine(v3, p31, p32)
+		expect(result3).toBeCloseTo(1)
+
+		const v4 = vector(1, 1)
+		const p41 = vector(0, 0)
+		const p42 = vector(0, -2)
+		const result4 = distanceFromPointToLine(v4, p41, p42)
+		expect(result4).toBeCloseTo(Math.sqrt(2))
 	})
 })
 

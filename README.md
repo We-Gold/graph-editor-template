@@ -8,8 +8,12 @@ Use the `Use this template` button to create a repository using this one as a st
 
 -   [x] Create basic graph nodes and edges
 -   [ ] Add mock event listeners using offscreen canvas (are there fractional colors?)
--   [ ] Create mouse zoom system (offset, dpr initial scale, center origin)
+-   [x] Create mouse zoom system (offset, dpr initial scale, center origin)
 -   [ ] Add graph editing keyboard shortcuts
+    -   [ ] Move point
+    -   [ ] Remove point
+    -   [ ] Add point
+    -   [ ] Undo (make each thing an action, and then make classes with an undo method, and a stack for history)
 -   [ ] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
 -   [ ] Create global configuration system
 -   [ ] Benchmark/profile the system on large datasets

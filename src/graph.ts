@@ -4,7 +4,8 @@ perhaps a static and dynamic option. Static uses typedarrays, dynamic uses array
 */
 
 import { incrementColor } from "./mouse-event-helpers"
-import { renderEdge, renderNode } from "./render-helpers"
+import { renderEdge, renderNode, renderNodeOffscreen } from "./render-helpers"
+import { Vector, distance, vector, distanceFromPointToLine } from "./vector"
 
 /**
  * The graph class manages all nodes and edges in the graph.
@@ -19,16 +20,32 @@ export class Graph {
 	edges: number[][]
 	nodeData: object[]
 
+	config: {
+		nodeCircleColor: string
+		nodeCircleRadius: number
+		nodeAccentColor: string
+		edgeColor: string
+		edgeWidth: number
+	}
+
 	constructor(
 		x: number[] = [],
 		y: number[] = [],
 		edges: number[][] = [],
-		nodeData: object[] = []
+		nodeData: object[] = [],
+		config = {
+			nodeCircleColor: "white",
+			nodeCircleRadius: 12,
+			nodeAccentColor: "turquoise",
+			edgeColor: "gray",
+			edgeWidth: 6,
+		}
 	) {
 		this.x = x
 		this.y = y
 		this.edges = edges
 		this.nodeData = nodeData
+		this.config = config
 	}
 
 	/**
@@ -53,6 +70,55 @@ export class Graph {
 	}
 
 	/**
+	 * Get either a node or an edge at the given index
+	 * @param mouse The mouse position in the world space
+	 * @param i The index of the item based on the order in which it was added (edges are added first, then nodes)
+	 * @returns {{ type: "node" | "edge" | "none"; index: number }} The type of item and its index in its respective array
+	 */
+	getItemAtIndex(
+		mouse: Vector,
+		i: number
+	): { type: "node" | "edge" | "none"; index: number } {
+		if (
+			this.isIndexNode(i) &&
+			this.pointInNode(mouse, i - this.edges.length)
+		) {
+			return { type: "node", index: i - this.edges.length }
+		} else if (this.isIndexEdge(i) && this.pointInEdge(mouse, i)) {
+			return { type: "edge", index: i }
+		} else {
+			return { type: "none", index: -1 }
+		}
+	}
+
+	isIndexNode(i: number) {
+		return !this.isIndexEdge(i)
+	}
+
+	isIndexEdge(i: number) {
+		return i < this.edges.length
+	}
+
+	pointInNode(point: Vector, i: number) {
+		return (
+			distance(point, vector(this.x[i], this.y[i])) <
+			this.config.nodeCircleRadius
+		)
+	}
+
+	pointInEdge(point: Vector, i: number) {
+		const [u, v] = this.edges[i]
+
+		return (
+			distanceFromPointToLine(
+				point,
+				vector(this.x[u], this.y[u]),
+				vector(this.x[v], this.y[v])
+			) < this.config.edgeWidth
+		)
+	}
+
+	/**
 	 * Render the graph to a canvas.
 	 * Note: Edges are rendered first, then nodes are rendered on top.
 	 * @param {CanvasRenderingContext2D} ctx The canvas rendering context
@@ -62,19 +128,19 @@ export class Graph {
 
 		// Render all edges
 		for (const [i, j] of this.edges) {
-			renderEdge(ctx, this.x[i], this.y[i], this.x[j], this.y[j], {
-				edgeColor: "gray",
-				edgeWidth: 6,
-			})
+			renderEdge(
+				ctx,
+				this.x[i],
+				this.y[i],
+				this.x[j],
+				this.y[j],
+				this.config
+			)
 		}
 
 		// Render all nodes
 		for (let i = 0; i < n; i++) {
-			renderNode(ctx, this.x[i], this.y[i], {
-				nodeCircleColor: "white",
-				nodeCircleRadius: 12,
-				nodeAccentColor: "turquoise",
-			})
+			renderNode(ctx, this.x[i], this.y[i], this.config)
 		}
 	}
 
@@ -98,7 +164,7 @@ export class Graph {
 
 			renderEdge(ctx, this.x[i], this.y[i], this.x[j], this.y[j], {
 				edgeColor: colorString,
-				edgeWidth: 6,
+				edgeWidth: this.config.edgeWidth,
 			})
 
 			// Increment the color
@@ -109,10 +175,9 @@ export class Graph {
 		for (let i = 0; i < n; i++) {
 			const colorString = `rgb(${color.r}, ${color.g}, ${color.b})`
 
-			renderNode(ctx, this.x[i], this.y[i], {
+			renderNodeOffscreen(ctx, this.x[i], this.y[i], {
 				nodeCircleColor: colorString,
-				nodeCircleRadius: 12,
-				nodeAccentColor: colorString,
+				nodeCircleRadius: this.config.nodeCircleRadius,
 			})
 
 			incrementColor(color)

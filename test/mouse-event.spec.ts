@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest"
 
-import { incrementColor, colorToIndex } from "../src/mouse-event-helpers"
+import { incrementColor, colorStringToIndex } from "../src/mouse-event-helpers"
 
 describe("incrementColor", () => {
 	test("incrementColor works correctly from rgb(0, 0, 0)", () => {
@@ -44,25 +44,25 @@ describe("incrementColor", () => {
 	})
 })
 
-describe("colorToIndex", () => {
-	test("colorToIndex works correctly for rgb(0, 0, 0)", () => {
-		expect(colorToIndex("rgb(0, 0, 0)")).toBe(0)
+describe("colorStringToIndex", () => {
+	test("colorStringToIndex works correctly for rgb(0, 0, 0)", () => {
+		expect(colorStringToIndex("rgb(0, 0, 0)")).toBe(0)
 	})
 
-	test("colorToIndex works correctly for rgb(0, 0, 255)", () => {
-		expect(colorToIndex("rgb(0, 0, 255)")).toBe(255)
+	test("colorStringToIndex works correctly for rgb(0, 0, 255)", () => {
+		expect(colorStringToIndex("rgb(0, 0, 255)")).toBe(255)
 	})
 
-	test("colorToIndex works correctly for rgb(0, 255, 0)", () => {
-		expect(colorToIndex("rgb(0, 255, 0)")).toBe(255 * 256)
+	test("colorStringToIndex works correctly for rgb(0, 255, 0)", () => {
+		expect(colorStringToIndex("rgb(0, 255, 0)")).toBe(255 * 256)
 	})
 
-	test("colorToIndex works correctly for rgb(0, 255, 1)", () => {
-		expect(colorToIndex("rgb(0, 255, 1)")).toBe(255 * 256 + 1)
+	test("colorStringToIndex works correctly for rgb(0, 255, 1)", () => {
+		expect(colorStringToIndex("rgb(0, 255, 1)")).toBe(255 * 256 + 1)
 	})
 
-	test("colorToIndex works correctly for rgb(255, 255, 255)", () => {
-		expect(colorToIndex("rgb(255, 255, 255)")).toBe(256 ** 3 - 1)
+	test("colorStringToIndex works correctly for rgb(255, 255, 255)", () => {
+		expect(colorStringToIndex("rgb(255, 255, 255)")).toBe(256 ** 3 - 1)
 	})
 })
 
