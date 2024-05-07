@@ -1,7 +1,9 @@
+import { Camera } from "./camera"
 import { Graph } from "./graph"
 
 export class Editor {
 	graph: Graph
+	camera: Camera
 	canvas: HTMLCanvasElement
 	offscreenCanvas: OffscreenCanvas
 	offscreenCtx: OffscreenCanvasRenderingContext2D
@@ -10,10 +12,12 @@ export class Editor {
 
 	constructor(
 		graph: Graph,
+		camera: Camera,
 		canvas: HTMLCanvasElement,
 		offscreenCanvas: OffscreenCanvas
 	) {
 		this.graph = graph
+		this.camera = camera
 		this.canvas = canvas
 		this.offscreenCanvas = offscreenCanvas
 
@@ -34,10 +38,7 @@ export class Editor {
 	handleMouseMove(e: MouseEvent) {
 		// TODO: This is a temporary solution to get the mouse position
 		// Once zooming is implemented, this will need to be updated
-		const mousePosition = {
-			x: e.clientX * window.devicePixelRatio,
-			y: e.clientY * window.devicePixelRatio,
-		}
+		const mousePosition = this.camera.getMousePosition(e)
 
 		// Get the color of the pixel at the mouse position on the offscreen canvas
 		const color = this.offscreenCtx.getImageData(

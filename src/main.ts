@@ -8,6 +8,7 @@ import {
 } from "./canvas-helpers"
 import { Graph } from "./graph"
 import { Editor } from "./editor"
+import { Camera } from "./camera"
 
 const containerSelector = "#container"
 
@@ -38,12 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		sampleGraph.nodeDate
 	)
 
-	const editor = new Editor(graph, canvas, offscreenCanvas)
+	const camera = new Camera(canvas)
+	const editor = new Editor(graph, camera, canvas, offscreenCanvas)
 
 	renderLoop(canvas, offscreenCanvas, (ctx, offscreenCtx) => {
-		// Clear the canvas
-		ctx.clearRect(0, 0, canvas.width, canvas.height)
-		offscreenCtx.clearRect(0, 0, canvas.width, canvas.height)
+		camera.render(ctx)
+		camera.renderOffscreen(offscreenCtx)
 
 		editor.render(ctx)
 		editor.renderOffscreen(offscreenCtx)
