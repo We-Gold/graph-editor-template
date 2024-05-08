@@ -27,11 +27,13 @@ export class UndoActionInstance implements ActionInstance {
 	constructor(sourceAction: Action, actionManager: ActionManager | null) {
 		this.action = sourceAction
 		this.actionManager = actionManager
-	}
 
-	run() {
 		this.actionManager?.undo()
 	}
+
+	run() {}
+
+	end() {}
 
 	undo() {}
 }

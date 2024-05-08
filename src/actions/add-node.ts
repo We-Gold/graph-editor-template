@@ -26,22 +26,30 @@ export class AddNodeActionInstance implements ActionInstance {
 	editor: Editor
 
 	pointToAdd: Vector
+	pointIndex: number
 
 	constructor(sourceAction: Action, editor: Editor) {
 		this.action = sourceAction
 		this.editor = editor
 
 		this.pointToAdd = editor.state.lastMousePosition
+
+		// Add the last mouse position to the graph as a node
+		this.pointIndex = this.editor.graph.addNode(
+			this.pointToAdd.x,
+			this.pointToAdd.y,
+			{}
+		)
 	}
 
-	run() {
-		// Add the last mouse position to the graph as a node
-		this.editor.graph.addNode(this.pointToAdd.x, this.pointToAdd.y, {})
-	}
+	run() {}
+
+	end() {}
 
 	undo() {
-		// TODO: Breaks if remove node is called on the same node
-		this.editor.graph.removeLastNode()
+		// Note: this only works because we assume any actions taken after this
+		// action are undone before this action is undone.
+		this.editor.graph.removeNode(this.pointIndex)
 	}
 }
 

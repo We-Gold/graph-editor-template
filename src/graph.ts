@@ -18,10 +18,10 @@ export const NoneGraphItem: GraphItem = { type: "none", index: -1 }
  * @returns {Graph} The graph object
  */
 export class Graph {
-	x: number[]
-	y: number[]
+	x: (number | null)[]
+	y: (number | null)[]
 	edges: number[][]
-	nodeData: object[]
+	nodeData: (object | null)[]
 
 	config: {
 		nodeCircleColor: string
@@ -64,32 +64,47 @@ export class Graph {
 	 * @param {number} x The x coordinate of the node
 	 * @param {number} y The y coordinate of the node
 	 * @param {object} data The data associated with the node
+	 * @returns {number} The index of the node in the graph
 	 */
-	addNode(x: number, y: number, data: object) {
+	addNode(x: number, y: number, data: object): number {
 		this.x.push(x)
 		this.y.push(y)
 		this.nodeData.push(data)
+
+		return this.x.length - 1
+	}
+
+	nodeExists(i: number) {
+		return this.x[i] !== null && this.y[i] !== null
+	}
+
+	insertNode(i: number, x: number, y: number, data: object) {
+		this.x[i] = x
+		this.y[i] = y
+		this.nodeData[i] = data
+	}
+
+	/**
+	 * Remove a node from the graph.
+	 * Sets the x and y coordinates, and data to null,
+	 * since removing the node would shift the indices of the other nodes,
+	 * breaking edges in the graph.
+	 * @param i The index of the node to remove
+	 */
+	removeNode(i: number) {
+		this.x[i] = null
+		this.y[i] = null
+		this.nodeData[i] = null
 	}
 
 	removeLastNode() {
-		this.x.pop()
-		this.y.pop()
-		this.nodeData.pop()
+		this.removeNode(this.x.length - 1)
 	}
 
-	getNode(i: number) {
-		return { x: this.x[i], y: this.y[i], data: this.nodeData[i] }
-	}
+	getNode(i: number): { x: number; y: number; data: object } | null {
+		if (!this.nodeExists(i)) return null
 
-	getEdge(i: number) {
-		return {
-			u: this.getNode(this.edges[i][0]),
-			v: this.getNode(this.edges[i][1]),
-		}
-	}
-
-	removeLastEdge() {
-		this.edges.pop()
+		return { x: this.x[i]!, y: this.y[i]!, data: this.nodeData[i]! }
 	}
 
 	/**
@@ -99,6 +114,86 @@ export class Graph {
 	 */
 	addEdge(i: number, j: number) {
 		this.edges.push([i, j])
+	}
+
+	insertEdge(i: number, u: number, v: number) {
+		this.edges.splice(i, 0, [u, v])
+	}
+
+	removeEdge(i: number) {
+		this.edges.splice(i, 1)
+	}
+
+	removeLastEdge() {
+		this.edges.pop()
+	}
+
+	/**
+	 * Get the edge value (node values included) at the given index
+	 * @param i
+	 * @returns
+	 */
+	getEdgeValue(i: number) {
+		return {
+			u: this.getNode(this.edges[i][0]),
+			v: this.getNode(this.edges[i][1]),
+		}
+	}
+
+	/**
+	 * Get the edge value stored at the given index
+	 * @param i
+	 * @returns
+	 */
+	getEdge(i: number) {
+		return { u: this.edges[i][0], v: this.edges[i][1] }
+	}
+
+	/**
+	 * Get the value of a node or edge
+	 * @param item The item to get the value of
+	 * @returns The value of the item
+	 */
+	getItemValue(item: GraphItem): any {
+		if (item.type === "node") {
+			return this.getNode(item.index)
+		} else if (item.type === "edge") {
+			return this.getEdge(item.index)
+		} else {
+			return null
+		}
+	}
+
+	insertItem(item: GraphItem, value: any) {
+		if (item.type === "node") {
+			this.insertNode(item.index, value.x, value.y, value.data)
+		} else if (item.type === "edge") {
+			this.insertEdge(item.index, value.u, value.v)
+		}
+	}
+
+	removeItem(item: GraphItem) {
+		if (item.type === "node") {
+			this.removeNode(item.index)
+		} else if (item.type === "edge") {
+			this.removeEdge(item.index)
+		}
+	}
+
+	/**
+	 * Get all edges connected to a node
+	 * @param i The index of the node
+	 * @returns An array of edges connected to the node
+	 */
+	getEdgesConnectedToNode(i: number): GraphItem[] {
+		const edges: GraphItem[] = []
+		for (let j = 0; j < this.edges.length; j++) {
+			const [u, v] = this.edges[j]
+			if (u === i || v === i) {
+				edges.push({ type: "edge", index: j })
+			}
+		}
+		return edges
 	}
 
 	/**
@@ -128,21 +223,35 @@ export class Graph {
 		return i < this.edges.length
 	}
 
+	/**
+	 * Check if a point is in a node,
+	 * ASSUMING that the node is not null
+	 * @param point
+	 * @param i
+	 * @returns
+	 */
 	pointInNode(point: Vector, i: number) {
 		return (
-			distance(point, vector(this.x[i], this.y[i])) <
+			distance(point, vector(this.x[i]!, this.y[i]!)) <
 			this.config.nodeCircleRadius
 		)
 	}
 
+	/**
+	 * Check if a point is in an edge,
+	 * ASSUMING that the edge and points are not null
+	 * @param point
+	 * @param i
+	 * @returns
+	 */
 	pointInEdge(point: Vector, i: number) {
 		const [u, v] = this.edges[i]
 
 		return (
 			distanceFromPointToLine(
 				point,
-				vector(this.x[u], this.y[u]),
-				vector(this.x[v], this.y[v])
+				vector(this.x[u]!, this.y[u]!),
+				vector(this.x[v]!, this.y[v]!)
 			) < this.config.edgeWidth
 		)
 	}
@@ -159,17 +268,19 @@ export class Graph {
 		for (const [i, j] of this.edges) {
 			renderEdge(
 				ctx,
-				this.x[i],
-				this.y[i],
-				this.x[j],
-				this.y[j],
+				this.x[i]!,
+				this.y[i]!,
+				this.x[j]!,
+				this.y[j]!,
 				this.config
 			)
 		}
 
 		// Render all nodes
 		for (let i = 0; i < n; i++) {
-			renderNode(ctx, this.x[i], this.y[i], this.config)
+			if (!this.nodeExists(i)) continue
+
+			renderNode(ctx, this.x[i]!, this.y[i]!, this.config)
 		}
 	}
 
@@ -191,7 +302,7 @@ export class Graph {
 		for (const [i, j] of this.edges) {
 			const colorString = `rgb(${color.r}, ${color.g}, ${color.b})`
 
-			renderEdge(ctx, this.x[i], this.y[i], this.x[j], this.y[j], {
+			renderEdge(ctx, this.x[i]!, this.y[i]!, this.x[j]!, this.y[j]!, {
 				edgeColor: colorString,
 				edgeWidth: this.config.edgeWidth,
 			})
@@ -204,7 +315,9 @@ export class Graph {
 		for (let i = 0; i < n; i++) {
 			const colorString = `rgb(${color.r}, ${color.g}, ${color.b})`
 
-			renderNodeOffscreen(ctx, this.x[i], this.y[i], {
+			if (!this.nodeExists(i)) continue
+
+			renderNodeOffscreen(ctx, this.x[i]!, this.y[i]!, {
 				nodeCircleColor: colorString,
 				nodeCircleRadius: this.config.nodeCircleRadius,
 			})

@@ -26,4 +26,5 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [ ] Add additional offscreen canvas for edges only to increase scalability
 -   [ ] Add wraparound handling for items outside the range
 -   [ ] Make sure the color system works beyond 256^3
+-   [ ] Add config/content pane on the left side (like streamlit)
 

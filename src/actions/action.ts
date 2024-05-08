@@ -23,13 +23,29 @@ export interface Action {
 	dispatchInstance: () => ActionInstance
 }
 
+/**
+ * An instance of an action. This is created when an action is dispatched,
+ * and it is what performs the action and is added to the undo stack.
+ *
+ * The lifecycle of an action instance is as follows:
+ * 1. The action instance is created when the action is dispatched (either when a key is pressed or when a button is clicked)
+ * 2. The constructor of the action instance is called once to create the instance, so any one-time operations go here.
+ * 3. The run method is called continuously while the action is active.
+ * 4. The end method is called once the action is disabled by the action manager.
+ * 5. The undo method is called if the action is undone, assuming that all following actions have been undone.
+ */
 export interface ActionInstance {
 	action: Action
 
 	/**
-	 * Run the action
+	 * Runs continuously while the action is active
 	 */
 	run: () => void
+
+	/**
+	 * Runs once the action is disabled by the action manager
+	 */
+	end: () => void
 
 	/**
 	 * Undo the action, assuming that all following actions have been undone
@@ -65,6 +81,8 @@ export class ActionManager {
 
 	keysHeld: Set<string> = new Set()
 
+	activeAction: ActionInstance | null = null
+
 	constructor(actions: Action[], { maxUndoStack = 15, tolerance = 10 } = {}) {
 		this.maxUndoStack = maxUndoStack
 		this.tolerance = tolerance
@@ -79,8 +97,21 @@ export class ActionManager {
 		actions.forEach((action) => this.addAction(action))
 	}
 
+	/**
+	 * To be called in the render loop,
+	 * runs the current action if there is one.
+	 */
+	runCurrentAction() {
+		if (this.activeAction) {
+			this.activeAction.run()
+		}
+	}
+
 	handleKeyDown(e: KeyboardEvent) {
 		this.keysHeld.add(e.key)
+
+		// Avoid dispatching multiple actions at once
+		if (this.activeAction !== null) return
 
 		// Check if any actions should be dispatched
 		this.actions.forEach((action) => {
@@ -95,7 +126,8 @@ export class ActionManager {
 
 	dispatchAction(action: Action) {
 		const instance = action.dispatchInstance()
-		instance.run()
+
+		this.activeAction = instance
 
 		// Do not add to the undo stack if the action is an undo action
 		if (action.name === "Undo") return
@@ -111,12 +143,25 @@ export class ActionManager {
 
 	handleKeyUp(e: KeyboardEvent) {
 		// The Meta key only triggers keyup events for itself, so reset the keys held
-		if (e.key === "Meta") {
+		if (e.key === "Meta" || this.keysHeld.has("Meta")) {
 			this.keysHeld = new Set()
-			return
+		} else {
+			this.keysHeld.delete(e.key)
 		}
 
-		this.keysHeld.delete(e.key)
+		// End the active action if the active action no longer matches the keys held
+		if (this.activeAction !== null) {
+			let shouldEnd = true
+
+			// Check if the keyboard shortcut for the action matches the keys held
+			for (const shortcut of this.activeAction.action.keyboardShortcut)
+				if (areSetsEqual(shortcut, this.keysHeld)) shouldEnd = false
+
+			if (shouldEnd) {
+				this.activeAction.end()
+				this.activeAction = null
+			}
+		}
 	}
 
 	undo() {
@@ -127,12 +172,6 @@ export class ActionManager {
 		} else {
 			return null
 		}
-	}
-
-	getActiveAction() {
-		if (this.undoStack.length === 0) return null
-
-		return this.undoStack[this.undoStack.length - 1]
 	}
 
 	addAction(action: Action) {

@@ -1,5 +1,6 @@
 import { ActionManager } from "./actions/action"
 import { AddNodeAction } from "./actions/add-node"
+import { RemoveItemAction } from "./actions/remove-item"
 import { UndoAction } from "./actions/undo"
 import { Camera } from "./camera"
 import { Graph, GraphItem, NoneGraphItem } from "./graph"
@@ -49,6 +50,7 @@ export class Editor {
 		this.actionManager = new ActionManager([
 			new AddNodeAction(this),
 			new UndoAction(),
+			new RemoveItemAction(this),
 		])
 
 		// Create an internal offscreen canvas context for the editor
@@ -132,20 +134,25 @@ export class Editor {
 	}
 
 	render(ctx: CanvasRenderingContext2D) {
+		// Run any active actions
+		this.actionManager.runCurrentAction()
+
 		this.graph.render(ctx)
 
 		// Render hovered nodes and edges
 		if (this.state.hovered.type === "node") {
 			const node = this.graph.getNode(this.state.hovered.index)
-			renderNodeHovered(ctx, node.x, node.y, this.graph.config)
+
+			if (node !== null)
+				renderNodeHovered(ctx, node.x, node.y, this.graph.config)
 		} else if (this.state.hovered.type === "edge") {
-			const edge = this.graph.getEdge(this.state.hovered.index)
+			const edge = this.graph.getEdgeValue(this.state.hovered.index)
 			renderEdgeHovered(
 				ctx,
-				edge.u.x,
-				edge.u.y,
-				edge.v.x,
-				edge.v.y,
+				edge.u!.x,
+				edge.u!.y,
+				edge.v!.x,
+				edge.v!.y,
 				this.graph.config
 			)
 		}
@@ -153,15 +160,17 @@ export class Editor {
 		// Render selected nodes and edges
 		if (this.state.selected.type === "node") {
 			const node = this.graph.getNode(this.state.selected.index)
-			renderNodeSelected(ctx, node.x, node.y, this.graph.config)
+
+			if (node !== null)
+				renderNodeSelected(ctx, node.x, node.y, this.graph.config)
 		} else if (this.state.selected.type === "edge") {
-			const edge = this.graph.getEdge(this.state.selected.index)
+			const edge = this.graph.getEdgeValue(this.state.selected.index)
 			renderEdgeSelected(
 				ctx,
-				edge.u.x,
-				edge.u.y,
-				edge.v.x,
-				edge.v.y,
+				edge.u!.x,
+				edge.u!.y,
+				edge.v!.x,
+				edge.v!.y,
 				this.graph.config
 			)
 		}
