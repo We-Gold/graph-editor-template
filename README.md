@@ -18,7 +18,7 @@ Use the `Use this template` button to create a repository using this one as a st
     -   [x] Deselect
     -   [x] Undo (make each thing an action, and then make classes with an undo method, and a stack (w/ generics) for history)
 -   [x] Add any tests that may be useful
--   [ ] Create global configuration system
+-   [x] Create global configuration system
 -   [ ] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
 -   [ ] Benchmark/profile the system on large datasets
 -   [ ] Create cleaning command to remove testing files for new repos

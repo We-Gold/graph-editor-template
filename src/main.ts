@@ -9,6 +9,7 @@ import {
 import { Graph } from "./graph"
 import { Editor } from "./editor"
 import { Camera } from "./camera"
+import { config } from "./config"
 
 const containerSelector = "#container"
 
@@ -33,6 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	}
 
 	const graph = new Graph(
+		config,
 		sampleGraph.x,
 		sampleGraph.y,
 		sampleGraph.edges,
@@ -40,7 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	)
 
 	const camera = new Camera(canvas)
-	const editor = new Editor(graph, camera, canvas, offscreenCanvas)
+	const editor = new Editor(config, graph, camera, canvas, offscreenCanvas)
 
 	renderLoop(canvas, offscreenCanvas, (ctx, offscreenCtx) => {
 		camera.render(ctx)

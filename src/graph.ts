@@ -3,6 +3,7 @@ Plan: Create basic ECS, where nodes and edges are stored in arrays.
 perhaps a static and dynamic option. Static uses typedarrays, dynamic uses arrays.
 */
 
+import { Config } from "./config"
 import { incrementColor } from "./mouse-event-helpers"
 import { renderEdge, renderNode, renderNodeOffscreen } from "./render-helpers"
 import { Vector, distance, vector, distanceFromPointToLine } from "./vector"
@@ -23,35 +24,16 @@ export class Graph {
 	edges: number[][]
 	nodeData: (object | null)[]
 
-	config: {
-		nodeCircleColor: string
-		nodeCircleRadius: number
-		nodeAccentColor: string
-		edgeColor: string
-		edgeWidth: number
-		nodeSelectedRadius: number
-		nodeHoveredWidth: number
-		edgeHoveredLength: number
-		edgeHoveredColor: string
-	}
+	config: Config
 
 	constructor(
+		config: Config,
 		x: number[] = [],
 		y: number[] = [],
 		edges: number[][] = [],
-		nodeData: object[] = [],
-		config = {
-			nodeCircleColor: "white",
-			nodeCircleRadius: 12,
-			nodeAccentColor: "turquoise",
-			edgeColor: "gray",
-			edgeWidth: 6,
-			nodeSelectedRadius: 4,
-			nodeHoveredWidth: 3,
-			edgeHoveredLength: 20,
-			edgeHoveredColor: "turquoise",
-		}
+		nodeData: object[] = []
 	) {
+		this.config = config
 		this.x = x
 		this.y = y
 		this.edges = edges

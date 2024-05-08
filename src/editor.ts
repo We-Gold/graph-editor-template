@@ -6,6 +6,7 @@ import { MoveNodeAction } from "./actions/move-node"
 import { RemoveItemAction } from "./actions/remove-item"
 import { UndoAction } from "./actions/undo"
 import { Camera } from "./camera"
+import { Config } from "./config"
 import { Graph, GraphItem, NoneGraphItem } from "./graph"
 import { colorToIndex } from "./mouse-event-helpers"
 import {
@@ -17,6 +18,7 @@ import {
 import { Vector, vector } from "./vector"
 
 export class Editor {
+	config: Config
 	graph: Graph
 	camera: Camera
 	canvas: HTMLCanvasElement
@@ -40,11 +42,13 @@ export class Editor {
 	}
 
 	constructor(
+		config: Config,
 		graph: Graph,
 		camera: Camera,
 		canvas: HTMLCanvasElement,
 		offscreenCanvas: OffscreenCanvas
 	) {
+		this.config = config
 		this.graph = graph
 		this.camera = camera
 		this.canvas = canvas
@@ -150,7 +154,7 @@ export class Editor {
 			const node = this.graph.getNode(this.state.hovered.index)
 
 			if (node !== null)
-				renderNodeHovered(ctx, node.x, node.y, this.graph.config)
+				renderNodeHovered(ctx, node.x, node.y, this.config)
 		} else if (this.state.hovered.type === "edge") {
 			const edge = this.graph.getEdgeValue(this.state.hovered.index)
 			renderEdgeHovered(
@@ -159,7 +163,7 @@ export class Editor {
 				edge.u!.y,
 				edge.v!.x,
 				edge.v!.y,
-				this.graph.config
+				this.config
 			)
 		}
 
@@ -168,7 +172,7 @@ export class Editor {
 			const node = this.graph.getNode(this.state.selected.index)
 
 			if (node !== null)
-				renderNodeSelected(ctx, node.x, node.y, this.graph.config)
+				renderNodeSelected(ctx, node.x, node.y, this.config)
 		} else if (this.state.selected.type === "edge") {
 			const edge = this.graph.getEdgeValue(this.state.selected.index)
 			renderEdgeSelected(
@@ -177,7 +181,7 @@ export class Editor {
 				edge.u!.y,
 				edge.v!.x,
 				edge.v!.y,
-				this.graph.config
+				this.config
 			)
 		}
 	}
