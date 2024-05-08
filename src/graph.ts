@@ -79,9 +79,13 @@ export class Graph {
 	}
 
 	insertNode(i: number, x: number, y: number, data: object) {
+		this.moveNode(i, x, y)
+		this.nodeData[i] = data
+	}
+
+	moveNode(i: number, x: number, y: number) {
 		this.x[i] = x
 		this.y[i] = y
-		this.nodeData[i] = data
 	}
 
 	/**

@@ -10,11 +10,11 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [x] Add mock event listeners using offscreen canvas (are there fractional colors?)
 -   [x] Create mouse zoom system (offset, dpr initial scale, center origin)
 -   [ ] Add graph editing keyboard shortcuts
-    -   [ ] Move point
-    -   [ ] Remove point
+    -   [x] Move point
+    -   [x] Remove point
     -   [x] Add point
     -   [ ] Add edge
-    -   [ ] Remove edge
+    -   [x] Remove edge
     -   [ ] Deselect
     -   [x] Undo (make each thing an action, and then make classes with an undo method, and a stack (w/ generics) for history)
 -   [ ] Create tooltip/info card that shows shortcuts on hover (synchronized with code)

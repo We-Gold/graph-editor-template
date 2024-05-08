@@ -1,5 +1,6 @@
 import { ActionManager } from "./actions/action"
 import { AddNodeAction } from "./actions/add-node"
+import { MoveNodeAction } from "./actions/move-node"
 import { RemoveItemAction } from "./actions/remove-item"
 import { UndoAction } from "./actions/undo"
 import { Camera } from "./camera"
@@ -51,6 +52,7 @@ export class Editor {
 			new AddNodeAction(this),
 			new UndoAction(),
 			new RemoveItemAction(this),
+			new MoveNodeAction(this),
 		])
 
 		// Create an internal offscreen canvas context for the editor
