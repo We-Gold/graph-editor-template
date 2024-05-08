@@ -12,7 +12,7 @@ import { Camera } from "./camera"
 
 const containerSelector = "#container"
 
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", () => {
 	const container =
 		document.querySelector<HTMLElement>(containerSelector) ??
 		defaultContainer()

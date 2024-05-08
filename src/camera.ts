@@ -26,7 +26,10 @@ export class Camera {
 	#mouseUpHandler: (e: MouseEvent) => void
 	#mouseMoveHandler: (e: MouseEvent) => void
 
-	constructor(canvas: HTMLCanvasElement, { zoomMin = 1, zoomMax = 5 } = {}) {
+	constructor(
+		canvas: HTMLCanvasElement,
+		{ zoomMin = 0.5, zoomMax = 5 } = {}
+	) {
 		this.zoomMin = zoomMin
 		this.zoomMax = zoomMax
 
@@ -48,17 +51,17 @@ export class Camera {
 		this.canvas = canvas
 
 		// Create bindings for zooming and panning (Click/Drag + Ctrl, Click/Drag + Shift)
-		// TODO add scroll wheel support
+		// TODO add scroll wheel support, iPad touch support
 		this.#keyDownHandler = this.handleKeyDown.bind(this)
 		this.#keyUpHandler = this.handleKeyUp.bind(this)
 		this.#mouseDownHandler = this.handleMouseDown.bind(this)
 		this.#mouseUpHandler = this.handleMouseUp.bind(this)
 		this.#mouseMoveHandler = this.handleMouseMove.bind(this)
 
-		document.addEventListener("keydown", this.#keyDownHandler)
-		document.addEventListener("keyup", this.#keyUpHandler)
+		window.addEventListener("keydown", this.#keyDownHandler)
+		window.addEventListener("keyup", this.#keyUpHandler)
 		canvas.addEventListener("mousedown", this.#mouseDownHandler)
-		document.addEventListener("mouseup", this.#mouseUpHandler)
+		window.addEventListener("mouseup", this.#mouseUpHandler)
 		canvas.addEventListener("mousemove", this.#mouseMoveHandler)
 	}
 
@@ -151,10 +154,10 @@ export class Camera {
 	}
 
 	destroy() {
-		document.removeEventListener("keydown", this.#keyDownHandler)
-		document.removeEventListener("keyup", this.#keyUpHandler)
+		window.removeEventListener("keydown", this.#keyDownHandler)
+		window.removeEventListener("keyup", this.#keyUpHandler)
 		this.canvas.removeEventListener("mousedown", this.#mouseDownHandler)
-		document.removeEventListener("mouseup", this.#mouseUpHandler)
+		window.removeEventListener("mouseup", this.#mouseUpHandler)
 		this.canvas.removeEventListener("mousemove", this.#mouseMoveHandler)
 	}
 }

@@ -1,3 +1,6 @@
+import { ActionManager } from "./actions/action"
+import { AddNodeAction } from "./actions/add-node"
+import { UndoAction } from "./actions/undo"
 import { Camera } from "./camera"
 import { Graph, GraphItem, NoneGraphItem } from "./graph"
 import { colorToIndex } from "./mouse-event-helpers"
@@ -7,6 +10,7 @@ import {
 	renderNodeHovered,
 	renderNodeSelected,
 } from "./render-helpers"
+import { Vector, vector } from "./vector"
 
 export class Editor {
 	graph: Graph
@@ -15,6 +19,8 @@ export class Editor {
 	offscreenCanvas: OffscreenCanvas
 	offscreenCtx: OffscreenCanvasRenderingContext2D
 
+	actionManager: ActionManager
+
 	#mouseMoveHandler: (e: MouseEvent) => void
 	#mouseDownHandler: (e: MouseEvent) => void
 	#mouseUpHandler: (e: MouseEvent) => void
@@ -22,9 +28,11 @@ export class Editor {
 	state: {
 		hovered: GraphItem
 		selected: GraphItem
+		lastMousePosition: Vector
 	} = {
 		hovered: { type: "none", index: -1 },
 		selected: { type: "none", index: -1 },
+		lastMousePosition: vector(0, 0),
 	}
 
 	constructor(
@@ -37,6 +45,11 @@ export class Editor {
 		this.camera = camera
 		this.canvas = canvas
 		this.offscreenCanvas = offscreenCanvas
+
+		this.actionManager = new ActionManager([
+			new AddNodeAction(this),
+			new UndoAction(),
+		])
 
 		// Create an internal offscreen canvas context for the editor
 		const offscreenCtx = offscreenCanvas.getContext("2d", {
@@ -53,7 +66,11 @@ export class Editor {
 
 		canvas.addEventListener("mousemove", this.#mouseMoveHandler)
 		canvas.addEventListener("mousedown", this.#mouseDownHandler)
-		document.addEventListener("mouseup", this.#mouseUpHandler)
+		window.addEventListener("mouseup", this.#mouseUpHandler)
+	}
+
+	getState() {
+		return this.state
 	}
 
 	handleMouseMove(e: MouseEvent) {
@@ -64,6 +81,9 @@ export class Editor {
 		} else {
 			this.state.hovered = NoneGraphItem
 		}
+
+		// Update the last mouse position
+		this.state.lastMousePosition = this.camera.getMousePosition(e)
 	}
 
 	handleMouseDown(e: MouseEvent) {
@@ -72,10 +92,14 @@ export class Editor {
 		if (item.type !== "none") {
 			this.state.selected = item
 		}
+
+		// Update the last mouse position
+		this.state.lastMousePosition = this.camera.getMousePosition(e)
 	}
 
-	handleMouseUp(_e: MouseEvent) {
-		// const item = this.#getItemFromMouseEvent(e)
+	handleMouseUp(e: MouseEvent) {
+		// Update the last mouse position
+		this.state.lastMousePosition = this.camera.getMousePosition(e)
 	}
 
 	/**
@@ -151,7 +175,9 @@ export class Editor {
 		// Remove mouse event listeners
 		this.canvas.removeEventListener("mousemove", this.#mouseMoveHandler)
 		this.canvas.removeEventListener("mousedown", this.#mouseDownHandler)
-		document.removeEventListener("mouseup", this.#mouseUpHandler)
+		window.removeEventListener("mouseup", this.#mouseUpHandler)
+
+		this.actionManager.destroy()
 	}
 }
 

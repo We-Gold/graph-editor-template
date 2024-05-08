@@ -71,6 +71,12 @@ export class Graph {
 		this.nodeData.push(data)
 	}
 
+	removeLastNode() {
+		this.x.pop()
+		this.y.pop()
+		this.nodeData.pop()
+	}
+
 	getNode(i: number) {
 		return { x: this.x[i], y: this.y[i], data: this.nodeData[i] }
 	}
@@ -80,6 +86,10 @@ export class Graph {
 			u: this.getNode(this.edges[i][0]),
 			v: this.getNode(this.edges[i][1]),
 		}
+	}
+
+	removeLastEdge() {
+		this.edges.pop()
 	}
 
 	/**
