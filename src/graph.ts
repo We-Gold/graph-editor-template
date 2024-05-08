@@ -124,12 +124,31 @@ export class Graph {
 		this.edges.splice(i, 0, [u, v])
 	}
 
+	removeLastEdge() {
+		this.edges.pop()
+	}
+
+	/**
+	 * Remove multiple edges from the graph
+	 * @param edgeIndices The indices of the edges to remove
+	 */
+	removeEdges(edgeIndices: number[]) {
+		for (let i = edgeIndices.length - 1; i >= 0; i--) {
+			this.removeEdge(edgeIndices[i])
+		}
+	}
+
 	removeEdge(i: number) {
 		this.edges.splice(i, 1)
 	}
 
-	removeLastEdge() {
-		this.edges.pop()
+	removeEdgeWithEndpoints(u: number, v: number) {
+		for (let i = 0; i < this.edges.length; i++) {
+			if (this.edges[i][0] === u && this.edges[i][1] === v) {
+				this.removeEdge(i)
+				return
+			}
+		}
 	}
 
 	/**

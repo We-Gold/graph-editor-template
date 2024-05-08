@@ -29,14 +29,14 @@ window.addEventListener("DOMContentLoaded", () => {
 			[1, 2],
 			[2, 3],
 		],
-		nodeDate: [{}, {}, {}, {}],
+		nodeData: [{}, {}, {}, {}],
 	}
 
 	const graph = new Graph(
 		sampleGraph.x,
 		sampleGraph.y,
 		sampleGraph.edges,
-		sampleGraph.nodeDate
+		sampleGraph.nodeData
 	)
 
 	const camera = new Camera(canvas)
@@ -48,9 +48,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 		editor.render(ctx)
 		editor.renderOffscreen(offscreenCtx)
-
-		// Render the offscreen canvas
-		// ctx.drawImage(offscreenCanvas, 0, 0)
 	})
 })
 

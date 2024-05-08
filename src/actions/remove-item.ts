@@ -36,7 +36,7 @@ export class RemoveItemActionInstance implements ActionInstance {
 	 * Optional properties for if a node is removed
 	 */
 	edgesToRemove: GraphItem[] | null = null
-	valueOfEdgesToRemove: any[] | null = null
+	valueOfEdgesToRemove: { u: number; v: number }[] | null = null
 
 	constructor(sourceAction: Action, editor: Editor) {
 		this.action = sourceAction
@@ -47,22 +47,23 @@ export class RemoveItemActionInstance implements ActionInstance {
 
 		this.valid = this.itemToRemove.type !== "none"
 
-		// TODO: Big problem, deleting node breaks all edges
-
 		if (this.valid) {
 			// If the item is a node, remove all edges connected to it and store them
 			if (this.itemToRemove.type === "node") {
+				// Get the edges connected to the node
 				this.edgesToRemove = editor.graph.getEdgesConnectedToNode(
 					this.itemToRemove.index
 				)
 
+				// Store the values of the edges to remove
 				this.valueOfEdgesToRemove = this.edgesToRemove.map((edge) =>
 					editor.graph.getEdge(edge.index)
 				)
 
-				for (const edge of this.edgesToRemove) {
-					editor.graph.removeEdge(edge.index)
-				}
+				// Remove the edges from the graph
+				editor.graph.removeEdges(
+					this.edgesToRemove.map((edge) => edge.index)
+				)
 			}
 
 			editor.graph.removeItem(this.itemToRemove)
@@ -95,10 +96,10 @@ export class RemoveItemActionInstance implements ActionInstance {
 			// If the item was a node, insert the edges back into the graph
 			if (this.itemToRemove.type === "node") {
 				for (let i = 0; i < this.edgesToRemove!.length; i++) {
-					this.editor.graph.insertItem(
-						this.edgesToRemove![i],
-						this.valueOfEdgesToRemove![i]
-					)
+					const edge = this.valueOfEdgesToRemove![i]
+
+					// Push each edge back into the graph
+					this.editor.graph.addEdge(edge.u, edge.v)
 				}
 			}
 		}
