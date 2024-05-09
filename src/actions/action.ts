@@ -1,3 +1,5 @@
+import { ActionButton } from "./action-button"
+
 export interface Action {
 	name: string
 
@@ -43,6 +45,12 @@ export interface ActionInstance {
 	run: () => void
 
 	/**
+	 * Returns true if the action is complete
+	 * @returns true if the action is complete, false otherwise
+	 */
+	isDone: () => boolean
+
+	/**
 	 * Runs once the action is disabled by the action manager
 	 */
 	end: () => void
@@ -71,6 +79,9 @@ export const areSetsEqual = <T>(a: Set<T>, b: Set<T>) => {
 export class ActionManager {
 	actions: Action[] = []
 
+	container: HTMLElement
+	actionButtonArea: HTMLElement
+
 	undoStack: ActionInstance[] = []
 
 	maxUndoStack: number
@@ -83,9 +94,19 @@ export class ActionManager {
 
 	activeAction: ActionInstance | null = null
 
-	constructor(actions: Action[], { maxUndoStack = 15, tolerance = 10 } = {}) {
+	constructor(
+		actions: Action[],
+		container: HTMLElement,
+		{ maxUndoStack = 15, tolerance = 10 } = {}
+	) {
 		this.maxUndoStack = maxUndoStack
 		this.tolerance = tolerance
+
+		// Add the action button area to the container
+		this.container = container
+		this.actionButtonArea = document.createElement("div")
+		this.actionButtonArea.classList.add("action-button-area")
+		this.container.appendChild(this.actionButtonArea)
 
 		this.#keyDownHandler = this.handleKeyDown.bind(this)
 		this.#keyUpHandler = this.handleKeyUp.bind(this)
@@ -104,6 +125,10 @@ export class ActionManager {
 	runCurrentAction() {
 		if (this.activeAction) {
 			this.activeAction.run()
+
+			if (this.activeAction.isDone()) {
+				this.#endCurrentAction()
+			}
 		}
 	}
 
@@ -158,9 +183,25 @@ export class ActionManager {
 				if (areSetsEqual(shortcut, this.keysHeld)) shouldEnd = false
 
 			if (shouldEnd) {
-				this.activeAction.end()
-				this.activeAction = null
+				this.#endCurrentAction()
 			}
+		}
+	}
+
+	#endCurrentAction() {
+		if (this.activeAction !== null) {
+			this.activeAction.end()
+
+			// Broadcast an event that the active action has ended
+			const event = new CustomEvent("action-ended", {
+				detail: {
+					actionName: this.activeAction.action.name,
+				},
+			})
+			window.dispatchEvent(event)
+
+			// Clear the active action
+			this.activeAction = null
 		}
 	}
 
@@ -177,6 +218,9 @@ export class ActionManager {
 	addAction(action: Action) {
 		action.linkActionManager(this)
 		this.actions.push(action)
+
+		// Add a button for the action
+		new ActionButton(this, action)
 	}
 
 	destroy() {

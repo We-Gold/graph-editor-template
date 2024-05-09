@@ -4,8 +4,6 @@ type RenderingContext =
 	| CanvasRenderingContext2D
 	| OffscreenCanvasRenderingContext2D
 
-// TODO: Add active, hover, and dash features for nodes and edges
-
 /**
  * Render a node based on the given configuration
  * @param {RenderingContext} ctx The rendering context

@@ -4,9 +4,18 @@ perhaps a static and dynamic option. Static uses typedarrays, dynamic uses array
 */
 
 import { Config } from "./config"
-import { incrementColor } from "./mouse-event-helpers"
-import { renderEdge, renderNode, renderNodeOffscreen } from "./render-helpers"
-import { Vector, distance, vector, distanceFromPointToLine } from "./vector"
+import { incrementColor } from "./helpers/mouse-event-helpers"
+import {
+	renderEdge,
+	renderNode,
+	renderNodeOffscreen,
+} from "./helpers/render-helpers"
+import {
+	Vector,
+	distance,
+	vector,
+	distanceFromPointToLine,
+} from "./helpers/vector"
 
 export type GraphItem = { type: "node" | "edge" | "none"; index: number }
 export const NoneGraphItem: GraphItem = { type: "none", index: -1 }

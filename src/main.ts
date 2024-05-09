@@ -5,7 +5,8 @@ import {
 	configureContainer,
 	initializeCanvases,
 	renderLoop,
-} from "./canvas-helpers"
+	configureStyles,
+} from "./helpers/canvas-helpers"
 import { Graph } from "./graph"
 import { Editor } from "./editor"
 import { Camera } from "./camera"
@@ -18,6 +19,7 @@ window.addEventListener("DOMContentLoaded", () => {
 		document.querySelector<HTMLElement>(containerSelector) ??
 		defaultContainer()
 
+	configureStyles(config)
 	configureContainer(container)
 
 	const [canvas, offscreenCanvas] = initializeCanvases(container)
@@ -42,7 +44,14 @@ window.addEventListener("DOMContentLoaded", () => {
 	)
 
 	const camera = new Camera(canvas)
-	const editor = new Editor(config, graph, camera, canvas, offscreenCanvas)
+	const editor = new Editor(
+		config,
+		graph,
+		camera,
+		canvas,
+		offscreenCanvas,
+		container
+	)
 
 	renderLoop(canvas, offscreenCanvas, (ctx, offscreenCtx) => {
 		camera.render(ctx)

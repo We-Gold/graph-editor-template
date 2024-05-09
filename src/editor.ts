@@ -8,14 +8,14 @@ import { UndoAction } from "./actions/undo"
 import { Camera } from "./camera"
 import { Config } from "./config"
 import { Graph, GraphItem, NoneGraphItem } from "./graph"
-import { colorToIndex } from "./mouse-event-helpers"
+import { colorToIndex } from "./helpers/mouse-event-helpers"
 import {
 	renderEdgeHovered,
 	renderEdgeSelected,
 	renderNodeHovered,
 	renderNodeSelected,
-} from "./render-helpers"
-import { Vector, vector } from "./vector"
+} from "./helpers/render-helpers"
+import { Vector, vector } from "./helpers/vector"
 
 export class Editor {
 	config: Config
@@ -46,7 +46,8 @@ export class Editor {
 		graph: Graph,
 		camera: Camera,
 		canvas: HTMLCanvasElement,
-		offscreenCanvas: OffscreenCanvas
+		offscreenCanvas: OffscreenCanvas,
+		container: HTMLElement
 	) {
 		this.config = config
 		this.graph = graph
@@ -54,14 +55,17 @@ export class Editor {
 		this.canvas = canvas
 		this.offscreenCanvas = offscreenCanvas
 
-		this.actionManager = new ActionManager([
-			new AddNodeAction(this),
-			new UndoAction(),
-			new RemoveItemAction(this),
-			new MoveNodeAction(this),
-			new DeselectAction(this),
-			new AddEdgeAction(this),
-		])
+		this.actionManager = new ActionManager(
+			[
+				new AddNodeAction(this),
+				new AddEdgeAction(this),
+				new MoveNodeAction(this),
+				new RemoveItemAction(this),
+				new DeselectAction(this),
+				new UndoAction(),
+			],
+			container
+		)
 
 		// Create an internal offscreen canvas context for the editor
 		const offscreenCtx = offscreenCanvas.getContext("2d", {

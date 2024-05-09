@@ -1,4 +1,4 @@
-import { Vector, add, scale, subtract, vector } from "./vector"
+import { Vector, add, scale, subtract, vector } from "./helpers/vector"
 
 export class Camera {
 	canvas: HTMLCanvasElement

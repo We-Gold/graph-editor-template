@@ -1,3 +1,5 @@
+import { Config } from "../config"
+
 /**
  * Create a container element
  * @returns {HTMLElement} The container element
@@ -15,7 +17,7 @@ export const defaultContainer = (): HTMLElement => {
  */
 export const configureContainer = (container: HTMLElement) => {
 	// Center the container in the document
-	container.style.position = "fixed"
+	container.style.position = "absolute"
 	container.style.top = "0"
 	container.style.left = "0"
 
@@ -32,6 +34,23 @@ export const configureContainer = (container: HTMLElement) => {
 
 	// Make sure the container does not scroll on mobile
 	container.style.touchAction = "none"
+}
+
+export const configureStyles = (config: Config) => {
+	const root: HTMLElement | null = document.querySelector(":root")
+
+	if (root === null) {
+		throw new Error("Error: No root element found")
+	}
+
+	root.style.setProperty("--button-accent-color", config.buttonAccentColor)
+	root.style.setProperty(
+		"--button-background-color",
+		config.buttonBackgroundColor
+	)
+	root.style.setProperty("--button-hover-color", config.buttonHoverColor)
+	root.style.setProperty("--button-text-color", config.buttonTextColor)
+	root.style.setProperty("--button-width", config.buttonWidth)
 }
 
 /**

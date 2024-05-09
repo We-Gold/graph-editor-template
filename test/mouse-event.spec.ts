@@ -1,6 +1,9 @@
 import { describe, test, expect } from "vitest"
 
-import { incrementColor, colorStringToIndex } from "../src/mouse-event-helpers"
+import {
+	incrementColor,
+	colorStringToIndex,
+} from "../src/helpers/mouse-event-helpers"
 
 describe("incrementColor", () => {
 	test("incrementColor works correctly from rgb(0, 0, 0)", () => {

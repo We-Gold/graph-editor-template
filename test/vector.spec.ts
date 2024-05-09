@@ -14,7 +14,7 @@ import {
 	distance,
 	distanceFromPointToLine,
 	midpoint,
-} from "../src/vector"
+} from "../src/helpers/vector"
 
 describe("Vector Functions", () => {
 	test("vector", () => {

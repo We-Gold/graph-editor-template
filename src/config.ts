@@ -1,4 +1,9 @@
 export const config = {
+	buttonAccentColor: "turquoise",
+	buttonBackgroundColor: "rgb(44,44,44)",
+	buttonHoverColor: "rgb(55,55,55)",
+	buttonTextColor: "white",
+	buttonWidth: "40px",
 	nodeCircleColor: "white",
 	nodeCircleRadius: 12,
 	nodeAccentColor: "turquoise",
@@ -11,3 +16,4 @@ export const config = {
 }
 
 export type Config = typeof config
+
