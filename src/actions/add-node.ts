@@ -29,35 +29,43 @@ export class AddNodeActionInstance implements ActionInstance {
 	action: Action
 	editor: Editor
 
-	pointToAdd: Vector
-	pointIndex: number
+	pointToAdd: Vector | null = null
+	pointIndex: number | null = null
+
+	mouseUp: boolean = false
+	done: boolean = false
 
 	constructor(sourceAction: Action, editor: Editor) {
 		this.action = sourceAction
 		this.editor = editor
-
-		this.pointToAdd = editor.state.lastMousePosition
-
-		// Add the last mouse position to the graph as a node
-		this.pointIndex = this.editor.graph.addNode(
-			this.pointToAdd.x,
-			this.pointToAdd.y,
-			{}
-		)
 	}
 
-	run() {}
+	run() {
+		if (this.editor.state.mouseDown && !this.done) {
+			this.pointToAdd = this.editor.state.lastMousePosition
+
+			// Add the last mouse position to the graph as a node
+			this.pointIndex = this.editor.graph.addNode(
+				this.pointToAdd.x,
+				this.pointToAdd.y,
+				{}
+			)
+
+			this.done = true
+		} else if (this.done && !this.editor.state.mouseDown) {
+			this.mouseUp = true
+		}
+	}
 
 	isDone() {
-		return true
+		return this.done && this.mouseUp
 	}
 
 	end() {}
 
 	undo() {
-		// Note: this only works because we assume any actions taken after this
-		// action are undone before this action is undone.
-		this.editor.graph.removeNode(this.pointIndex)
+		if (this.pointIndex !== null)
+			this.editor.graph.removeNode(this.pointIndex)
 	}
 }
 

@@ -35,10 +35,12 @@ export class Editor {
 		hovered: GraphItem
 		selected: GraphItem
 		lastMousePosition: Vector
+		mouseDown: boolean
 	} = {
-		hovered: { type: "none", index: -1 },
-		selected: { type: "none", index: -1 },
+		hovered: NoneGraphItem,
+		selected: NoneGraphItem,
 		lastMousePosition: vector(0, 0),
+		mouseDown: false,
 	}
 
 	constructor(
@@ -111,11 +113,17 @@ export class Editor {
 
 		// Update the last mouse position
 		this.state.lastMousePosition = this.camera.getMousePosition(e)
+
+		// Update mouse down state
+		this.state.mouseDown = true
 	}
 
 	handleMouseUp(e: MouseEvent) {
 		// Update the last mouse position
 		this.state.lastMousePosition = this.camera.getMousePosition(e)
+
+		// Update mouse down state
+		this.state.mouseDown = false
 	}
 
 	/**
