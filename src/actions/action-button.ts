@@ -5,12 +5,16 @@ export class ActionButton {
 	action: Action
 
 	button: HTMLAnchorElement
+	shortcutInfo: HTMLDivElement
 
 	constructor(actionManager: ActionManager, action: Action) {
 		this.actionManager = actionManager
 		this.action = action
 
 		this.button = this.#createButton()
+
+		// Create a toggleable section that shows the keyboard shortcuts for the action
+		this.shortcutInfo = this.#createShortcutInfo()
 
 		// Bind the button to the action manager's dispatch method
 		this.#bindEvents()
@@ -21,9 +25,9 @@ export class ActionButton {
 
 	#createButton() {
 		const button = document.createElement("a")
+
 		button.classList.add("action-button")
 		button.title = this.action.name
-
 		button.innerHTML = this.action.icon
 
 		return button
@@ -36,8 +40,13 @@ export class ActionButton {
 			if (this.actionManager.activeAction) return
 
 			this.actionManager.dispatchAction(this.action)
-			this.button.classList.add("selected-action-button")
 		})
+
+		// When the action starts, add the active class to the button
+		window.addEventListener("action-started", ((e: CustomEvent) => {
+			if (e.detail.actionName === this.action.name)
+				this.button.classList.add("selected-action-button")
+		}) as EventListener)
 
 		// When the action ends, remove the active class from the button
 		window.addEventListener("action-ended", ((e: CustomEvent) => {
@@ -46,8 +55,22 @@ export class ActionButton {
 		}) as EventListener)
 	}
 
+	#createShortcutInfo() {
+		this.shortcutInfo = document.createElement("div")
+		this.shortcutInfo.classList.add("shortcut-info")
+
+		const shortcutStrings = this.action.keyboardShortcut
+			.map((shortcut) => [...shortcut].join(" + "))
+			.join(" or ")
+
+		this.shortcutInfo.innerText = shortcutStrings
+
+		return this.shortcutInfo
+	}
+
 	#attach() {
 		this.actionManager.actionButtonArea.appendChild(this.button)
+		this.actionManager.shortcutInfoArea.appendChild(this.shortcutInfo)
 	}
 }
 

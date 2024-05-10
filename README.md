@@ -17,9 +17,10 @@ Use the `Use this template` button to create a repository using this one as a st
     -   [x] Remove edge
     -   [x] Deselect
     -   [x] Undo (make each thing an action, and then make classes with an undo method, and a stack (w/ generics) for history)
+    -   [ ] Improve icons
 -   [x] Add any tests that may be useful
 -   [x] Create global configuration system
--   [ ] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
+-   [x] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
 -   [ ] Benchmark/profile the system on large datasets
 -   [ ] Create cleaning command to remove testing files for new repos
 -   [ ] Automatically center and scale based on dataset x and y coords

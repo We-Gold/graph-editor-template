@@ -6,7 +6,8 @@ import {
 	initializeCanvases,
 	renderLoop,
 	configureStyles,
-} from "./helpers/canvas-helpers"
+	addInfoButton,
+} from "./helpers/dom-helpers"
 import { Graph } from "./graph"
 import { Editor } from "./editor"
 import { Camera } from "./camera"
@@ -21,6 +22,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	configureStyles(config)
 	configureContainer(container)
+
+	addInfoButton(container)
 
 	const [canvas, offscreenCanvas] = initializeCanvases(container)
 

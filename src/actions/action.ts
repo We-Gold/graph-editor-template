@@ -81,6 +81,7 @@ export class ActionManager {
 
 	container: HTMLElement
 	actionButtonArea: HTMLElement
+	shortcutInfoArea: HTMLElement
 
 	undoStack: ActionInstance[] = []
 
@@ -102,11 +103,26 @@ export class ActionManager {
 		this.maxUndoStack = maxUndoStack
 		this.tolerance = tolerance
 
-		// Add the action button area to the container
 		this.container = container
+
+		// Add the action button area to the container
 		this.actionButtonArea = document.createElement("div")
 		this.actionButtonArea.classList.add("action-button-area")
 		this.container.appendChild(this.actionButtonArea)
+
+		// Add the shortcut info area to the container
+		this.shortcutInfoArea = document.createElement("div")
+		this.shortcutInfoArea.classList.add("shortcut-info-area")
+		this.shortcutInfoArea.style.display = "none"
+		this.container.appendChild(this.shortcutInfoArea)
+
+		// Show or hide the shortcut info area based on the info button state
+		window.addEventListener("info-button-active", () => {
+			this.shortcutInfoArea.style.display = "flex"
+		})
+		window.addEventListener("info-button-inactive", () => {
+			this.shortcutInfoArea.style.display = "none"
+		})
 
 		this.#keyDownHandler = this.handleKeyDown.bind(this)
 		this.#keyUpHandler = this.handleKeyUp.bind(this)
@@ -153,6 +169,14 @@ export class ActionManager {
 		const instance = action.dispatchInstance()
 
 		this.activeAction = instance
+
+		// Broadcast an event that the active action has started
+		const event = new CustomEvent("action-started", {
+			detail: {
+				actionName: action.name,
+			},
+		})
+		window.dispatchEvent(event)
 
 		// Do not add to the undo stack if the action is an undo action
 		if (action.name === "Undo") return
