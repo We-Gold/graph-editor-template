@@ -98,3 +98,17 @@ body {
 	box-sizing: border-box;
 }
 
+.panel {
+	padding: 0.3rem 1rem;
+	position: absolute;
+	left: calc(0.5 * var(--button-width));
+	width: clamp(200px, 300px, 94vw);
+	height: 94vh;
+	background-color: rgba(255, 255, 255, 0.25);
+	border-radius: calc(0.1 * var(--button-width));
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+	backdrop-filter: blur(15px);
+	z-index: 999;
+}
+

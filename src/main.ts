@@ -7,6 +7,7 @@ import {
 	renderLoop,
 	configureStyles,
 	addInfoButton,
+	addPanel,
 } from "./helpers/dom-helpers"
 import { Graph } from "./graph"
 import { Editor } from "./editor"
@@ -24,6 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	configureContainer(container)
 
 	addInfoButton(container)
+	addPanel(container)
 
 	const [canvas, offscreenCanvas] = initializeCanvases(container)
 

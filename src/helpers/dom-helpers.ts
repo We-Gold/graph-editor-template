@@ -135,6 +135,10 @@ export const renderLoop = (
 	}
 }
 
+/**
+ * Add a button to show and hide shortcut information
+ * @param container the container element of the graph editor
+ */
 export const addInfoButton = (container: HTMLElement) => {
 	const infoButton = document.createElement("a")
 	infoButton.classList.add("info-button")
@@ -157,5 +161,14 @@ export const addInfoButton = (container: HTMLElement) => {
 	})
 
 	container.appendChild(infoButton)
+}
+
+export const addPanel = (container: HTMLElement) => {
+	const panel = document.createElement("div")
+	panel.classList.add("panel")
+	panel.innerHTML = `<h1>Graph Editor</h1>
+						<p>Add description here</p>`
+
+	container.appendChild(panel)
 }
 
