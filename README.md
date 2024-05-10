@@ -21,8 +21,9 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [x] Add any tests that may be useful
 -   [x] Create global configuration system
 -   [x] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
--   [ ] Add config/content pane on the left side (like streamlit)
--   [ ] Benchmark/profile the system on large datasets
+-   [x] Add config/content pane on the left side (like streamlit)
+-   [x] Benchmark/profile the system on large datasets
+-   [ ] Find performance improvements
 -   [ ] Create cleaning command to remove testing files for new repos
 -   [ ] Automatically center and scale based on dataset x and y coords
 -   [ ] Add additional offscreen canvas for edges only to increase scalability
@@ -31,4 +32,26 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [ ] Split up css files
 -   [ ] Change action names to be based on actions and not names of things (info-button-active => show-shortcut-info)
 -   [ ] Improve class reusability, like with buttons
+
+## Benchmark Results
+
+The system has been tested on an M2 MacBook Air, using the FPS counter in the rendering
+tab of Chrome DevTools.
+
+#### Fully Connected (every node to every other node)
+
+10 Nodes: 60 fps static, 60 fps moving
+50 Nodes: 60 fps static, 60 fps moving
+100 Nodes: 60 fps static, at min 20 fps moving
+
+### Sparsely Connected (one edge per node)
+
+10 Nodes: 60 fps static, 60 fps moving
+50 Nodes: 60 fps static, 60 fps moving
+100 Nodes: 60 fps static, 60 fps moving
+500 Nodes: 60 fps static, 60 fps moving
+1000 Nodes: 60 fps static, 60 fps moving
+5000 Nodes: 60 fps static, 50 fps moving
+10000 Nodes: 45 fps static, 35 fps moving
+50000 Nodes: 15 fps static, 12 fps moving
 

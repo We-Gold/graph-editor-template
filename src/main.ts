@@ -29,15 +29,49 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	const [canvas, offscreenCanvas] = initializeCanvases(container)
 
+	// const sampleGraph = {
+	// 	x: [100, 200, 300, 400],
+	// 	y: [100, 200, 300, 400],
+	// 	edges: [
+	// 		[0, 1],
+	// 		[1, 2],
+	// 		[2, 3],
+	// 	],
+	// 	nodeData: [{}, {}, {}, {}],
+	// }
+
+	const x = []
+	const y = []
+
+	const numNodes = 100
+	const rowCapacity = 12
+
+	for (let i = 0; i < numNodes; i++) {
+		x.push(50 + 40 * (i % rowCapacity))
+		y.push(50 + 40 * Math.floor(i / rowCapacity))
+	}
+
+	const edges = []
+
+	// Fully Connected
+	// for (let i = 0; i < x.length; i++) {
+	// 	for (let j = 0; j < y.length; j++) {
+	// 		if (i !== j) {
+	// 			edges.push([i, j])
+	// 		}
+	// 	}
+	// }
+
+	// Sparsely Connected
+	for (let i = 0; i < x.length - 1; i++) {
+		edges.push([i, i + 1])
+	}
+
 	const sampleGraph = {
-		x: [100, 200, 300, 400],
-		y: [100, 200, 300, 400],
-		edges: [
-			[0, 1],
-			[1, 2],
-			[2, 3],
-		],
-		nodeData: [{}, {}, {}, {}],
+		x: x,
+		y: y,
+		edges: edges,
+		nodeData: x.map((_) => ({})),
 	}
 
 	const graph = new Graph(
