@@ -34,6 +34,9 @@ export class MoveNodeActionInstance implements ActionInstance {
 
 	valid: boolean
 
+	dragging: boolean = false
+	done: boolean = false
+
 	constructor(sourceAction: Action, editor: Editor) {
 		this.action = sourceAction
 		this.editor = editor
@@ -49,19 +52,23 @@ export class MoveNodeActionInstance implements ActionInstance {
 	run() {
 		if (!this.valid) return
 
-		const currentPosition = this.editor.state.lastMousePosition
+		if (this.editor.state.mouseDown) {
+			const currentPosition = this.editor.state.lastMousePosition
 
-		this.editor.graph.moveNode(
-			this.pointIndex!,
-			currentPosition.x,
-			currentPosition.y
-		)
+			this.editor.graph.moveNode(
+				this.pointIndex!,
+				currentPosition.x,
+				currentPosition.y
+			)
+
+			this.dragging = true
+		} else if (this.dragging && !this.editor.state.mouseDown) {
+			this.done = true
+		}
 	}
 
 	isDone() {
-		// TODO: Make it so that this action is done when the mouse is released
-
-		return false
+		return !this.valid || this.done
 	}
 
 	end() {}

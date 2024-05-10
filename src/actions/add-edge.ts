@@ -62,7 +62,7 @@ export class AddEdgeActionInstance implements ActionInstance {
 	}
 
 	isDone() {
-		return this.endIndex !== null
+		return !this.valid || this.endIndex !== null
 	}
 
 	end() {}
