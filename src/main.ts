@@ -25,7 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	configureContainer(container)
 
 	addInfoButton(container)
-	addPanel(container)
+	addPanel(container, config)
 
 	const [canvas, offscreenCanvas] = initializeCanvases(container)
 

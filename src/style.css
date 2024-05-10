@@ -110,5 +110,40 @@ body {
 	box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
 	backdrop-filter: blur(15px);
 	z-index: 999;
+	transition: 0.3s; /* Slide out and in for transitions */
+}
+
+.close-panel-button {
+	position: absolute;
+	right: calc(0.1 * var(--button-width));
+	top: calc(0.1 * var(--button-width));
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: var(--button-width);
+	height: var(--button-width);
+	color: var(--button-text-color);
+	transition: 0.3s;
+}
+
+.close-panel-button:hover {
+	cursor: pointer;
+}
+
+.show-panel-button {
+	position: absolute;
+	left: calc(0.5 * var(--button-width));
+	top: calc(3vh + 0.3rem + 0.1 * var(--button-width));
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: var(--button-width);
+	height: var(--button-width);
+	color: var(--button-text-color);
+	transition: 0.3s;
+}
+
+.show-panel-button:hover {
+	cursor: pointer;
 }
 
