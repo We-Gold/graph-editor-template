@@ -1,5 +1,5 @@
 export const config = {
-	showPanelDefault: true,
+	showPanelDefault: false,
 	buttonAccentColor: "turquoise",
 	buttonBackgroundColor: "rgb(44,44,44)",
 	buttonHoverColor: "rgb(55,55,55)",

@@ -166,10 +166,11 @@ export const addInfoButton = (container: HTMLElement) => {
 export const addPanel = (container: HTMLElement, config: Config) => {
 	const panel = document.createElement("div")
 	panel.classList.add("panel")
+	panel.classList.add("fadeable")
 	panel.innerHTML = `<h1>Graph Editor</h1>
 						<p>Add description here</p>`
 
-	if (!config.showPanelDefault) panel.style.display = "none"
+	if (!config.showPanelDefault) panel.classList.add("fade")
 
 	// Create a button to hide the panel
 	const closeButton = document.createElement("a")
@@ -184,7 +185,9 @@ export const addPanel = (container: HTMLElement, config: Config) => {
 	// Create a button to show the panel
 	const showButton = document.createElement("a")
 	showButton.classList.add("show-panel-button")
-	showButton.style.display = "none"
+	showButton.classList.add("fadeable")
+
+	if (config.showPanelDefault) showButton.classList.add("fade")
 
 	showButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512">
 								<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
@@ -193,13 +196,13 @@ export const addPanel = (container: HTMLElement, config: Config) => {
 							</svg>`
 
 	closeButton.addEventListener("click", () => {
-		panel.style.display = "none"
-		showButton.style.display = "inline"
+		panel.classList.add("fade")
+		showButton.classList.remove("fade")
 	})
 
 	showButton.addEventListener("click", () => {
-		panel.style.display = "block"
-		showButton.style.display = "none"
+		panel.classList.remove("fade")
+		showButton.classList.add("fade")
 	})
 
 	// Add the close button to the panel
