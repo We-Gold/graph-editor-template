@@ -83,6 +83,8 @@ window.addEventListener("DOMContentLoaded", () => {
 	)
 
 	const camera = new Camera(canvas)
+	camera.matchGraphData(sampleGraph.x, sampleGraph.y)
+
 	const editor = new Editor(
 		config,
 		graph,

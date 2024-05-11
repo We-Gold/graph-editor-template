@@ -23,15 +23,16 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [x] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
 -   [x] Add config/content pane on the left side (like streamlit)
 -   [x] Benchmark/profile the system on large datasets
+-   [x] Automatically center and scale based on dataset x and y coords
+-   [ ] Split up css files
 -   [ ] Find performance improvements (try doing stroke and fill only once for nodes and edges)
 -   [ ] Create cleaning command to remove testing files for new repos
--   [ ] Automatically center and scale based on dataset x and y coords
 -   [ ] Add additional offscreen canvas for edges only to increase scalability
 -   [ ] Add wraparound handling for items outside the range
 -   [ ] Make sure the color system works beyond 256^3
--   [ ] Split up css files
 -   [ ] Change action names to be based on actions and not names of things (info-button-active => show-shortcut-info)
 -   [ ] Improve class reusability, like with buttons
+-   [ ] Add accessibility features
 
 ## Benchmark Results
 

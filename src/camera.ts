@@ -65,6 +65,42 @@ export class Camera {
 		canvas.addEventListener("mousemove", this.#mouseMoveHandler)
 	}
 
+	/**
+	 * Centers the camera on the graph data and scales it to fit the canvas.
+	 * Note: the scaling factor and zoomMinFactor are optional parameters that
+	 * control how zoomed out the graph is on the graph data, and the minimum
+	 * zoom level respectively.
+	 * @param x
+	 * @param y
+	 * @param configuration
+	 */
+	matchGraphData(
+		x: number[],
+		y: number[],
+		{ scalingFactor = 1.5, zoomMinFactor = 0.25 } = {}
+	) {
+		const minX = Math.min(...x)
+		const minY = Math.min(...y)
+		const maxX = Math.max(...x)
+		const maxY = Math.max(...y)
+
+		const width = maxX - minX
+		const height = maxY - minY
+
+		const canvasWidth = this.canvas.width / window.devicePixelRatio
+		const canvasHeight = this.canvas.height / window.devicePixelRatio
+
+		const scaleWidth = width / canvasWidth
+		const scaleHeight = height / canvasHeight
+
+		// Center the graph in the canvas
+		this.offset = scale(vector((minX + maxX) / 2, (minY + maxY) / 2), -1)
+
+		// Set the scale based on the larger of the two scaling axes
+		this.scale = Math.max(scaleWidth, scaleHeight) * scalingFactor
+		this.zoomMin = this.scale * zoomMinFactor
+	}
+
 	handleKeyDown(e: KeyboardEvent) {
 		if (e.key === "Control" || e.key == "Alt") this.controlHeld = true
 		if (e.key === "Shift") this.shiftHeld = true
@@ -83,6 +119,8 @@ export class Camera {
 	handleMouseUp() {
 		if (this.dragging) {
 			this.offset = add(this.offset, this.drag.offset)
+			console.log(`Offset x: ${this.offset.x}, y: ${this.offset.y}`)
+
 			this.drag = {
 				start: vector(0, 0),
 				last: vector(0, 0),
@@ -108,6 +146,8 @@ export class Camera {
 				this.zoomMin,
 				Math.min(this.zoomMax, this.scale)
 			)
+
+			console.log(`Scale: ${this.scale}`)
 		}
 	}
 
