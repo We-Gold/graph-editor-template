@@ -23,7 +23,7 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [x] Create tooltip/info card that shows shortcuts on hover (synchronized with code)
 -   [x] Add config/content pane on the left side (like streamlit)
 -   [x] Benchmark/profile the system on large datasets
--   [ ] Find performance improvements
+-   [ ] Find performance improvements (try doing stroke and fill only once for nodes and edges)
 -   [ ] Create cleaning command to remove testing files for new repos
 -   [ ] Automatically center and scale based on dataset x and y coords
 -   [ ] Add additional offscreen canvas for edges only to increase scalability

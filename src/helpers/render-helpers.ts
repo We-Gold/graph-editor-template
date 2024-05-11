@@ -1,3 +1,4 @@
+import { Config } from "../config"
 import { add, midpoint, normalize, scale, subtract, vector } from "./vector"
 
 type RenderingContext =
@@ -139,6 +140,53 @@ export const renderNodeSelected = (
 	ctx.fill()
 
 	ctx.restore()
+}
+
+/**
+ * Render an edge based on the given configuration
+ * @param {RenderingContext} ctx The rendering context
+ * @param {number} x1 The x coordinate of the first node
+ * @param {number} y1 The y coordinate of the first node
+ * @param {number} x2 The x coordinate of the second node
+ * @param {number} y2 The y coordinate of the second node
+ */
+export const batchRenderEdge = (
+	ctx: RenderingContext,
+	x1: number,
+	y1: number,
+	x2: number,
+	y2: number
+) => {
+	ctx.moveTo(x1, y1)
+	ctx.lineTo(x2, y2)
+}
+
+/**
+ * Render many edges based on the given configuration
+ * @param ctx
+ * @param edges
+ * @param config
+ */
+export const batchRenderEdges = (
+	ctx: RenderingContext,
+	x: (number | null)[],
+	y: (number | null)[],
+	edges: number[][],
+	config: Config
+) => {
+	// Configure the context for drawing edges
+	ctx.strokeStyle = config.edgeColor
+	ctx.lineWidth = config.edgeWidth
+	ctx.setLineDash([])
+	ctx.beginPath()
+
+	// Render all edges
+	for (const [i, j] of edges) {
+		batchRenderEdge(ctx, x[i]!, y[i]!, x[j]!, y[j]!)
+	}
+
+	// Draw all the edges
+	ctx.stroke()
 }
 
 /**

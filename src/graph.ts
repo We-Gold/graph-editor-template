@@ -6,6 +6,7 @@ perhaps a static and dynamic option. Static uses typedarrays, dynamic uses array
 import { Config } from "./config"
 import { incrementColor } from "./helpers/mouse-event-helpers"
 import {
+	batchRenderEdges,
 	renderEdge,
 	renderNode,
 	renderNodeOffscreen,
@@ -279,16 +280,7 @@ export class Graph {
 		const n = this.x.length
 
 		// Render all edges
-		for (const [i, j] of this.edges) {
-			renderEdge(
-				ctx,
-				this.x[i]!,
-				this.y[i]!,
-				this.x[j]!,
-				this.y[j]!,
-				this.config
-			)
-		}
+		batchRenderEdges(ctx, this.x, this.y, this.edges, this.config)
 
 		// Render all nodes
 		for (let i = 0; i < n; i++) {

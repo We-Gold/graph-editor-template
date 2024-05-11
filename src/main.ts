@@ -47,7 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	const rowCapacity = 12
 
 	for (let i = 0; i < numNodes; i++) {
-		x.push(50 + 40 * (i % rowCapacity))
+		x.push(100 + 40 * (i % rowCapacity))
 		y.push(50 + 40 * Math.floor(i / rowCapacity))
 	}
 
