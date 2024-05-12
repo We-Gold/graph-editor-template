@@ -1,5 +1,7 @@
 import { ActionButton } from "./action-button"
 
+import "./action.css"
+
 export interface Action {
 	name: string
 

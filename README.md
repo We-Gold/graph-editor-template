@@ -26,7 +26,7 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [x] Automatically center and scale based on dataset x and y coords
 -   [x] Add zoom buttons
 -   [x] Improve class reusability, like with buttons
--   [ ] Split up css files
+-   [x] Split up css files
 -   [ ] Find performance improvements (try doing stroke and fill only once for nodes and edges)
 -   [ ] Create cleaning command to remove testing files for new repos
 -   [ ] Add additional offscreen canvas for edges only to increase scalability
