@@ -22,6 +22,7 @@ import { DeselectAction } from "./actions/deselect"
 import { UndoAction } from "./actions/undo"
 import { ZoomInAction } from "./actions/zoom-in"
 import { ZoomOutAction } from "./actions/zoom-out"
+import { generateGraphData } from "./helpers/generate-graph"
 
 const containerSelector = "#container"
 
@@ -38,50 +39,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	const [canvas, offscreenCanvas] = initializeCanvases(container)
 
-	// const sampleGraph = {
-	// 	x: [100, 200, 300, 400],
-	// 	y: [100, 200, 300, 400],
-	// 	edges: [
-	// 		[0, 1],
-	// 		[1, 2],
-	// 		[2, 3],
-	// 	],
-	// 	nodeData: [{}, {}, {}, {}],
-	// }
-
-	const x = []
-	const y = []
-
-	const numNodes = 100
-	const rowCapacity = 12
-
-	for (let i = 0; i < numNodes; i++) {
-		x.push(100 + 40 * (i % rowCapacity))
-		y.push(50 + 40 * Math.floor(i / rowCapacity))
-	}
-
-	const edges = []
-
-	// Fully Connected
-	// for (let i = 0; i < x.length; i++) {
-	// 	for (let j = 0; j < y.length; j++) {
-	// 		if (i !== j) {
-	// 			edges.push([i, j])
-	// 		}
-	// 	}
-	// }
-
-	// Sparsely Connected
-	for (let i = 0; i < x.length - 1; i++) {
-		edges.push([i, i + 1])
-	}
-
-	const sampleGraph = {
-		x: x,
-		y: y,
-		edges: edges,
-		nodeData: x.map((_) => ({})),
-	}
+	const sampleGraph = generateGraphData(100, 12, false)
 
 	const graph = new Graph(
 		config,

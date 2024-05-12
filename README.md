@@ -28,6 +28,7 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [x] Improve class reusability, like with buttons
 -   [x] Split up css files
 -   [x] Add accessibility features
+-   [x] Make reusable graph generator
 -   [ ] Interchangeable 2d and webgl renderers
 -   [ ] Change action names to be based on actions and not names of things (info-button-active => show-shortcut-info)
 -   [ ] Find performance improvements (try doing stroke and fill only once for nodes and edges)
