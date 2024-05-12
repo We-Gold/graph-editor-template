@@ -24,6 +24,7 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [x] Add config/content pane on the left side (like streamlit)
 -   [x] Benchmark/profile the system on large datasets
 -   [x] Automatically center and scale based on dataset x and y coords
+-   [x] Add zoom buttons
 -   [ ] Split up css files
 -   [ ] Find performance improvements (try doing stroke and fill only once for nodes and edges)
 -   [ ] Create cleaning command to remove testing files for new repos

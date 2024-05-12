@@ -1,10 +1,3 @@
-import { ActionManager } from "./actions/action"
-import { AddEdgeAction } from "./actions/add-edge"
-import { AddNodeAction } from "./actions/add-node"
-import { DeselectAction } from "./actions/deselect"
-import { MoveNodeAction } from "./actions/move-node"
-import { RemoveItemAction } from "./actions/remove-item"
-import { UndoAction } from "./actions/undo"
 import { Camera } from "./camera"
 import { Config } from "./config"
 import { Graph, GraphItem, NoneGraphItem } from "./graph"
@@ -24,8 +17,6 @@ export class Editor {
 	canvas: HTMLCanvasElement
 	offscreenCanvas: OffscreenCanvas
 	offscreenCtx: OffscreenCanvasRenderingContext2D
-
-	actionManager: ActionManager
 
 	#mouseMoveHandler: (e: MouseEvent) => void
 	#mouseDownHandler: (e: MouseEvent) => void
@@ -48,26 +39,13 @@ export class Editor {
 		graph: Graph,
 		camera: Camera,
 		canvas: HTMLCanvasElement,
-		offscreenCanvas: OffscreenCanvas,
-		container: HTMLElement
+		offscreenCanvas: OffscreenCanvas
 	) {
 		this.config = config
 		this.graph = graph
 		this.camera = camera
 		this.canvas = canvas
 		this.offscreenCanvas = offscreenCanvas
-
-		this.actionManager = new ActionManager(
-			[
-				new AddNodeAction(this),
-				new AddEdgeAction(this),
-				new MoveNodeAction(this),
-				new RemoveItemAction(this),
-				new DeselectAction(this),
-				new UndoAction(),
-			],
-			container
-		)
 
 		// Create an internal offscreen canvas context for the editor
 		const offscreenCtx = offscreenCanvas.getContext("2d", {
@@ -156,9 +134,6 @@ export class Editor {
 	}
 
 	render(ctx: CanvasRenderingContext2D) {
-		// Run any active actions
-		this.actionManager.runCurrentAction()
-
 		this.graph.render(ctx)
 
 		// Render hovered nodes and edges
@@ -207,8 +182,6 @@ export class Editor {
 		this.canvas.removeEventListener("mousemove", this.#mouseMoveHandler)
 		this.canvas.removeEventListener("mousedown", this.#mouseDownHandler)
 		window.removeEventListener("mouseup", this.#mouseUpHandler)
-
-		this.actionManager.destroy()
 	}
 }
 

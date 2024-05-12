@@ -119,7 +119,6 @@ export class Camera {
 	handleMouseUp() {
 		if (this.dragging) {
 			this.offset = add(this.offset, this.drag.offset)
-			console.log(`Offset x: ${this.offset.x}, y: ${this.offset.y}`)
 
 			this.drag = {
 				start: vector(0, 0),
@@ -142,13 +141,26 @@ export class Camera {
 			this.scale -= dx / (2 * this.canvas.width)
 
 			// Constrain the scale to between zoomMin and zoomMax
-			this.scale = Math.max(
-				this.zoomMin,
-				Math.min(this.zoomMax, this.scale)
-			)
-
-			console.log(`Scale: ${this.scale}`)
+			this.constrainScale(this.scale)
 		}
+	}
+
+	constrainScale(newScale: number) {
+		this.scale = Math.max(this.zoomMin, Math.min(this.zoomMax, newScale))
+	}
+
+	zoomIn(zoomFactor: number = 0.08) {
+		// Zoom in by zoomFactor % of the total scale
+		const totalScale = this.zoomMax - this.zoomMin
+
+		this.constrainScale(this.scale - totalScale * zoomFactor)
+	}
+
+	zoomOut(zoomFactor: number = 0.08) {
+		// Zoom out by zoomFactor % of the total scale
+		const totalScale = this.zoomMax - this.zoomMin
+
+		this.constrainScale(this.scale + totalScale * zoomFactor)
 	}
 
 	/**
