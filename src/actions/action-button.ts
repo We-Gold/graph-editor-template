@@ -27,6 +27,7 @@ export class ActionButton {
 		const button = document.createElement("a")
 
 		button.classList.add("action-button")
+		button.classList.add("base-button")
 		button.title = this.action.name
 		button.innerHTML = this.action.icon
 

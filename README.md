@@ -25,6 +25,7 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [x] Benchmark/profile the system on large datasets
 -   [x] Automatically center and scale based on dataset x and y coords
 -   [x] Add zoom buttons
+-   [x] Improve class reusability, like with buttons
 -   [ ] Split up css files
 -   [ ] Find performance improvements (try doing stroke and fill only once for nodes and edges)
 -   [ ] Create cleaning command to remove testing files for new repos
@@ -32,7 +33,6 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [ ] Add wraparound handling for items outside the range
 -   [ ] Make sure the color system works beyond 256^3
 -   [ ] Change action names to be based on actions and not names of things (info-button-active => show-shortcut-info)
--   [ ] Improve class reusability, like with buttons
 -   [ ] Add accessibility features
 
 ## Benchmark Results

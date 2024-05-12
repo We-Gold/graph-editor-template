@@ -142,6 +142,7 @@ export const renderLoop = (
 export const addInfoButton = (container: HTMLElement) => {
 	const infoButton = document.createElement("a")
 	infoButton.classList.add("info-button")
+	infoButton.classList.add("base-button")
 	infoButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 320 512">
 								<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
 								<path opacity="1" fill="currentColor" 
