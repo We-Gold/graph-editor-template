@@ -141,6 +141,8 @@ export const renderLoop = (
  */
 export const addInfoButton = (container: HTMLElement) => {
 	const infoButton = document.createElement("a")
+	infoButton.title = "Show or hide shortcut information"
+	infoButton.setAttribute("aria-label", "Show or hide shortcut information")
 	infoButton.classList.add("info-button")
 	infoButton.classList.add("base-button")
 	infoButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 320 512">
@@ -175,6 +177,8 @@ export const addPanel = (container: HTMLElement, config: Config) => {
 
 	// Create a button to hide the panel
 	const closeButton = document.createElement("a")
+	closeButton.title = "Close the panel"
+	closeButton.setAttribute("aria-label", "Close the panel")
 	closeButton.classList.add("close-panel-button")
 
 	closeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512">
@@ -185,6 +189,8 @@ export const addPanel = (container: HTMLElement, config: Config) => {
 
 	// Create a button to show the panel
 	const showButton = document.createElement("a")
+	showButton.title = "Show the panel"
+	showButton.setAttribute("aria-label", "Show the panel")
 	showButton.classList.add("show-panel-button")
 	showButton.classList.add("fadeable")
 

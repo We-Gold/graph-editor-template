@@ -27,13 +27,14 @@ Use the `Use this template` button to create a repository using this one as a st
 -   [x] Add zoom buttons
 -   [x] Improve class reusability, like with buttons
 -   [x] Split up css files
+-   [x] Add accessibility features
+-   [ ] Interchangeable 2d and webgl renderers
+-   [ ] Change action names to be based on actions and not names of things (info-button-active => show-shortcut-info)
 -   [ ] Find performance improvements (try doing stroke and fill only once for nodes and edges)
 -   [ ] Create cleaning command to remove testing files for new repos
 -   [ ] Add additional offscreen canvas for edges only to increase scalability
 -   [ ] Add wraparound handling for items outside the range
 -   [ ] Make sure the color system works beyond 256^3
--   [ ] Change action names to be based on actions and not names of things (info-button-active => show-shortcut-info)
--   [ ] Add accessibility features
 
 ## Benchmark Results
 

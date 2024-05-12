@@ -29,6 +29,7 @@ export class ActionButton {
 		button.classList.add("action-button")
 		button.classList.add("base-button")
 		button.title = this.action.name
+		button.setAttribute("aria-label", this.action.name)
 		button.innerHTML = this.action.icon
 
 		return button
