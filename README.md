@@ -44,20 +44,24 @@ The system has been tested on an M2 MacBook Air, using the FPS counter in the re
 
 #### Fully Connected (every node to every other node)
 
-10 Nodes: 60 fps static, 60 fps moving
-50 Nodes: 60 fps static, 60 fps moving
-100 Nodes: 60 fps static, at min 20 fps moving
+| # Nodes | FPS Static | FPS Moving  |
+| ------- | ---------- | ----------- |
+| 10      | 60         | 60          |
+| 50      | 60         | 60          |
+| 100     | 60         | 20 (at min) |
 
 ### Sparsely Connected (one edge per node)
 
-10 Nodes: 60 fps static, 60 fps moving
-50 Nodes: 60 fps static, 60 fps moving
-100 Nodes: 60 fps static, 60 fps moving
-500 Nodes: 60 fps static, 60 fps moving
-1000 Nodes: 60 fps static, 60 fps moving
-5000 Nodes: 60 fps static, 50 fps moving
-10000 Nodes: 45 fps static, 35 fps moving
-50000 Nodes: 15 fps static, 12 fps moving
+| # Nodes | FPS Static | FPS Moving |
+| ------- | ---------- | ---------- |
+| 10      | 60         | 60         |
+| 50      | 60         | 60         |
+| 100     | 60         | 60         |
+| 500     | 60         | 60         |
+| 1000    | 60         | 60         |
+| 5000    | 60         | 50         |
+| 10000   | 45         | 35         |
+| 50000   | 15         | 12         |
 
 ## Progress Tracker
 
