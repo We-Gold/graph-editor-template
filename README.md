@@ -50,7 +50,7 @@ The system has been tested on an M2 MacBook Air, using the FPS counter in the re
 | 50      | 60         | 60          |
 | 100     | 60         | 20 (at min) |
 
-### Sparsely Connected (one edge per node)
+#### Sparsely Connected (one edge per node)
 
 | # Nodes | FPS Static | FPS Moving |
 | ------- | ---------- | ---------- |
