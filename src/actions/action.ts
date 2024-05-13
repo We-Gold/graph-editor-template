@@ -119,10 +119,10 @@ export class ActionManager {
 		this.container.appendChild(this.shortcutInfoArea)
 
 		// Show or hide the shortcut info area based on the info button state
-		window.addEventListener("info-button-active", () => {
+		window.addEventListener("show-shortcut-info", () => {
 			this.shortcutInfoArea.style.display = "flex"
 		})
-		window.addEventListener("info-button-inactive", () => {
+		window.addEventListener("hide-shortcut-info", () => {
 			this.shortcutInfoArea.style.display = "none"
 		})
 
