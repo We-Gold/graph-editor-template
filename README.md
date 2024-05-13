@@ -6,6 +6,8 @@ This repository is a starter template for web-based graph editor applications.
 
 Use the `Use this template` button to create a repository using this one as a starting point.
 
+**If you use this in your own project**, please link to or credit this repository. This code is open-source, so you are not required to, but it would be kind.
+
 ### Motivation
 
 Web apps that utilize graph editors are often complex and very custom software. To accommodate these usecases, this repository serves as a starting point for a full codebase, rather than a library that solves every problem.
