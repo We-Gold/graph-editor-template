@@ -1,3 +1,7 @@
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/We-Gold/graph-editor-template/issues)
+![ViewCount](https://views.whatilearened.today/views/github/We-Gold/graph-editor-template.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 # Graph Editor Template
 
 ![Graph Editor Template Demo Image](./readme-hero.png)
